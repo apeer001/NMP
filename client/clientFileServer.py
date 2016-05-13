@@ -29,11 +29,11 @@ class KodeFunHTTPRequestHandler(BaseHTTPRequestHandler):
       self.send_error(404, 'file not found')
   
 def run():
-  print('http server is starting...')
+  print('http fileserver is starting...')
 
   #ip and port of servr
   #by default http server port is 80
-  server_address = ('127.0.0.1', 8080)
+  server_address = ('198.199.105.122', 8080)
   httpd = HTTPServer(server_address, KodeFunHTTPRequestHandler)
   print('http server is running...')
   httpd.serve_forever()

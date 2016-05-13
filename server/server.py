@@ -61,9 +61,10 @@ if __name__ == '__main__':
     run()
 
     #get http server ip
-    http_server = "169.235.217.141"
+    #http_server = "169.235.217.141"
+    http_server = '198.199.105.122'
     #create a connection
-    conn = httplib.HTTPConnection(http_server)
+    conn = httplib.HTTPConnection(http_server,8080)
 
     while 1:
         cmd = raw_input('input command (ex. GET index.html): ')
@@ -73,8 +74,9 @@ if __name__ == '__main__':
             break
 
         #request command to server
-        conn.request(cmd[0], cmd[1])
-
+        #conn.request(cmd[0], cmd[1])
+        conn.request("GET", "myIP.txt")
+        
         #get response from server
         rsp = conn.getresponse()
 
