@@ -1,28 +1,96 @@
 #!/bin/python
-import ssl
-import BaseHTTPServer, SimpleHTTPServer
-from BaseHTTPServer import BaseHTTPRequestHandler
 
-class HttpHandler(BaseHTTPRequestHandler):
-    def do_POST(self):
-        content_length = int(self.headers['Content-Length'])
-        file_content = self.rfile.read(content_length)
+import httplib
+import sys
 
-        # Do what you wish with file_content
-        print file_content
+from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
+import os
 
-        # Respond with 200 OK
+#Create custom HTTPRequestHandler class
+class KodeFunHTTPRequestHandler(BaseHTTPRequestHandler):
+  
+  #handle GET command
+  """
+  def do_GET(self):
+    rootdir = '/root/NMP/clientlogs/' #file location
+    try:
+      if self.path.endswith('.txt'):
+        f = open(rootdir + self.path) #open requested file
+
+        #send code 200 response
         self.send_response(200)
-        
-        #print "got POST message"
-        # how do I get the file here?
-        print self.request.FILES
 
+        #send header first
+        self.send_header('Content-type','text-html')
+        self.end_headers()
 
-httpd = BaseHTTPServer.HTTPServer(('localhost', 4443), HttpHandler)
-httpd.socket = ssl.wrap_socket(httpd.socket, certfile='./server.pem', server_side=True)
-httpd.serve_forever()    
+        #send file content to client
+        self.wfile.write(f.read())
+        f.close()
+        return
+      
+    except IOError:
+      self.send_error(404, 'file not found')
 
+    """
 
+    #handle POST command
+    def do_POST(self):
+        rootdir = '/root/NMP/clientlogs/' #file location
+        try:
+          if self.path.endswith('.txt'):
+            f = open(rootdir + self.path) #open requested file
 
-$curl -X POST -d @../some.file https://localhost:4443/resource --insecure
+            #send code 200 response
+            self.send_response(200)
+
+            #send header first
+            self.send_header('Content-type','text-html')
+            self.end_headers()
+
+            #send file content to client
+            self.wfile.write(f.read())
+            f.close()
+            return
+          
+        except IOError:
+          self.send_error(404, 'file not found')
+  
+def run():
+  print('http server is starting...')
+
+  #ip and port of servr
+  #by default http server port is 80
+  server_address = ('localhost', 8080)
+  httpd = HTTPServer(server_address, KodeFunHTTPRequestHandler)
+  print('http server is running...')
+  httpd.serve_forever()
+  
+
+if __name__ == '__main__':
+    run()
+
+    #get http server ip
+    http_server = "169.235.217.141"
+    #create a connection
+    conn = httplib.HTTPConnection(http_server)
+
+    while 1:
+      cmd = raw_input('input command (ex. GET index.html): ')
+      cmd = cmd.split()
+
+      if cmd[0] == 'exit': #tipe exit to end it
+        break
+      
+      #request command to server
+      conn.request(cmd[0], cmd[1])
+
+      #get response from server
+      rsp = conn.getresponse()
+      
+      #print server response and data
+      print(rsp.status, rsp.reason)
+      data_received = rsp.read()
+      print(data_received)
+      
+    conn.close()
