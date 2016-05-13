@@ -1,1 +1,0 @@
-Put all server files in this folder

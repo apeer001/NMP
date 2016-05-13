@@ -1,0 +1,4 @@
+create database test_db;
+use test_db;
+create table machines (cid integer, ip_addr varchar(15));
+insert into machines values (0, "127.0.0.1");
