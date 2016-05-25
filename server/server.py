@@ -1,4 +1,4 @@
-#!/bin/python
+#!/usr/bin/python
 
 import httplib
 import sys
@@ -62,7 +62,7 @@ if __name__ == '__main__':
 
     #get http server ip
     #http_server = "169.235.217.141"
-    http_server = '198.199.105.122'
+    http_server = '52.10.214.107'
     #create a connection
     conn = httplib.HTTPConnection(http_server,8080)
 
