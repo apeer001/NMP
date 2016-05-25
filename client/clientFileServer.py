@@ -8,7 +8,7 @@ class KodeFunHTTPRequestHandler(BaseHTTPRequestHandler):
 		
   def do_GET(self):
     print "sending junk"
-    rootdir = '/root/Desktop/' #file location
+    rootdir = '/home/ec2-user/cs183/NMP/client/' #file location
     try:
       if self.path.endswith('.txt'):
         f = open(rootdir + self.path) #open requested file
@@ -33,7 +33,8 @@ def run():
 
   #ip and port of servr
   #by default http server port is 80
-  server_address = ('198.199.105.122', 8080)
+  #server_address = ('198.199.105.122', 8080)
+  server_address = ('172.31.26.65', 8080)
   httpd = HTTPServer(server_address, KodeFunHTTPRequestHandler)
   print('http server is running...')
   httpd.serve_forever()
