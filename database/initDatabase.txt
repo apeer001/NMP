@@ -1,2 +1,0 @@
-drop database cs183;
-create database cs183;
