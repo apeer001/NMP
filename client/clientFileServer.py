@@ -2,6 +2,7 @@
 
 from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
 import os
+import httplib
 
 #Create custom HTTPRequestHandler class
 class KodeFunHTTPRequestHandler(BaseHTTPRequestHandler):
@@ -27,17 +28,59 @@ class KodeFunHTTPRequestHandler(BaseHTTPRequestHandler):
       
     except IOError:
       self.send_error(404, 'file not found')
-  
-def run():
+
+# Send Init Client data  
+def initClientOnMain():
+
+    print('Preparing to send client data...')
+    #Get http server ip and port
+    http_server = '52.32.201.77'
+    http_port = 8080
+
+    #Create a connection
+    conn = httplib.HTTPConnection(http_server,http_port)
+
+    status = 0
+    tries = 0
+    while status != 200 and tries < 5:
+        #Request command to server
+        conn.request("POST", "172.31.26.65.txt")
+        print('Connection established with ' + http_server)
+
+        #Get response from server
+        rsp = conn.getresponse()
+        status = rsp.status
+        print('Status: ' + str(status))
+        #Print server response and data
+        print(rsp.status, rsp.reason)
+        data_received = rsp.read()
+        print(data_received)
+        
+        #update try
+        tries += 1
+
+    conn.close()
+    print('Connection to ' + http_server + ' closed!')
+    return status
+
+# Client File Server
+def runClientFileServer():
   print('http fileserver is starting...')
 
   #ip and port of servr
-  #by default http server port is 80
-  #server_address = ('198.199.105.122', 8080)
+  #by default http server port is 80, we set it to 8080
   server_address = ('172.31.26.65', 8080)
   httpd = HTTPServer(server_address, KodeFunHTTPRequestHandler)
   print('http server is running...')
   httpd.serve_forever()
   
 if __name__ == '__main__':
-  run()
+    # Send init data to main Server
+    status = initClientOnMain()
+    
+    if status == 200:
+        # Serve any request from the main Server
+        runClientFileServer()
+    else:
+        print('Error: Unable to send client init data')
+
