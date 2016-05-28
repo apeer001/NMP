@@ -7,13 +7,13 @@ from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
 import os
 
 hostname = "localhost"
-username = ""
+username = "root"
 password = ""
 database = "cs183"
 
 
 # Update MySQL database
-def updateDatabase(ip):
+def updateDatabase(ip,user='root',status='OK',load=5,temp=10,net_load=20):
 
     print('Connecting to Database...')
     db = MySQLdb.connect(host=hostname, # your host, usually localhost
@@ -25,12 +25,45 @@ def updateDatabase(ip):
     # must create a cursor object
     cur = db.cursor()
     try:
-        # Insert data into mysql database
-        cur.execute("INSERT INTO most_recent_network_status ",(ip))
-        db.commit()
+        query_stmt = "SELECT EXISTS(SELECT 1 FROM most_recent_network_status WHERE computer_IP ='" + ip + "' LIMIT 1)"
+        cur.execute(query_stmt)  
+        
+        for (result) in cur:
+            if result == "1":
+                insert_stmt = (
+                    "INSERT INTO most_recent_network_status (admin_username, computer_IP, computer_status, cpu_load, computer_temp, network_load) "
+                    "VALUES (%s, %s, %s, %s, %s, %s)"
+                )
+ 
+                # Update data into mysql database
+                # Data update into the table
+                #insert_stmt = (
+                #    """UPDATE most_recent_network_status
+                #       SET Year=%s, Month=%s, Day=%s, Hour=%s, Minute=%s
+                #       WHERE Server=%s"""
+                #)
+                data = (user, ip, status, load, temp, net_load)
+                                                                           
+                cur.execute(insert_stmt,data)
+                db.commit()
+    
+            else: 
+                # Insert data into mysql database
+                # Data Insert into the table
+                insert_stmt = (
+                    "INSERT INTO most_recent_network_status (admin_username, computer_IP, computer_status, cpu_load, computer_temp, network_load) "
+                    "VALUES (%s, %s, %s, %s, %s, %s)"
+                )
+                data = (user, ip, status, load, temp, net_load)
+                                                                           
+                cur.execute(insert_stmt,data)
+                db.commit()
    
-         # Get all infor from table
-        cur.execute("SELECT * FROM most_recent_network_status")
+                # Get all infor from table
+                cur.execute("SELECT * FROM most_recent_network_status")
+        
+            break 
+       
         # print all the first cell of all the rows
         for row in cur.fetchall():
             print row[0]
