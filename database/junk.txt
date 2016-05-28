@@ -1,0 +1,10 @@
+
+create table most_recent_network_status
+(
+	username VARCHAR(255) NOT NULL,
+	id INT NOT NULL,
+	status VARCHAR(255),
+
+	FOREIGN KEY (username) REFERENCES users(username)
+);
+
