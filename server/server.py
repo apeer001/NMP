@@ -28,37 +28,40 @@ def updateDatabase(ip,user='root',status='OK',load=5,temp=10,net_load=20):
         query_stmt = "SELECT EXISTS(SELECT 1 FROM most_recent_network_status WHERE computer_IP ='" + ip + "' LIMIT 1)"
         cur.execute(query_stmt)  
         
-        for (result) in cur:
-            if result == "1":
-                insert_stmt = (
-                    "INSERT INTO most_recent_network_status (admin_username, computer_IP, computer_status, cpu_load, computer_temp, network_load) "
-                    "VALUES (%s, %s, %s, %s, %s, %s)"
-                )
- 
+        for (result,) in cur:
+            print(result)
+            if result == 1:
+                print('UPDATING')
                 # Update data into mysql database
                 # Data update into the table
-                #insert_stmt = (
-                #    """UPDATE most_recent_network_status
-                #       SET Year=%s, Month=%s, Day=%s, Hour=%s, Minute=%s
-                #       WHERE Server=%s"""
-                #)
-                data = (user, ip, status, load, temp, net_load)
+                insert_stmt = (
+                    """UPDATE most_recent_network_status
+                       SET admin_username=%s, computer_status=%s, cpu_load=%s, computer_temp=%s, network_load=%s
+                       WHERE computer_IP=%s"""
+                )
+                data = (user, status, load, temp, net_load, ip)
                                                                            
                 cur.execute(insert_stmt,data)
                 db.commit()
     
-            else: 
+            else:
+                print('INSERTING')
+                # Get number of rows 
+                query_stmt = "SELECT COUNT(*) FROM most_recent_network_status"
+                cur.execute(query_stmt)
+                (comp_id,) = cur.fetchone()
+
                 # Insert data into mysql database
                 # Data Insert into the table
                 insert_stmt = (
-                    "INSERT INTO most_recent_network_status (admin_username, computer_IP, computer_status, cpu_load, computer_temp, network_load) "
-                    "VALUES (%s, %s, %s, %s, %s, %s)"
+                    "INSERT INTO most_recent_network_status (admin_username, computer_id, computer_IP, computer_status, cpu_load, computer_temp, network_load) "
+                    "VALUES (%s, %s, %s, %s, %s, %s, %s)"
                 )
-                data = (user, ip, status, load, temp, net_load)
+                data = (user, comp_id, ip, status, load, temp, net_load)
                                                                            
                 cur.execute(insert_stmt,data)
                 db.commit()
-   
+
                 # Get all infor from table
                 cur.execute("SELECT * FROM most_recent_network_status")
         
@@ -68,7 +71,8 @@ def updateDatabase(ip,user='root',status='OK',load=5,temp=10,net_load=20):
         for row in cur.fetchall():
             print row[0]
     except:
-        conn.rollback()
+        db.rollback()
+        print('Rolled back database due to error')
     
     db.close()
 
