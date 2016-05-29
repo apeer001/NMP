@@ -4,15 +4,19 @@ from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
 import os
 import httplib
 
+logFile = 'client_log.txt'
+
 #Create custom HTTPRequestHandler class
 class KodeFunHTTPRequestHandler(BaseHTTPRequestHandler):
 		
   def do_GET(self):
     print "sending junk"
     rootdir = '/home/ec2-user/cs183/NMP/client/' #file location
+    if not os.path.exists(rootdir):
+        os.makedirs(rootdir)
     try:
-      if self.path.endswith('.txt'):
-        f = open(rootdir + self.path) #open requested file
+      if os.path.exists(rootdir + logFile):
+        f = open(rootdir + logFile) #open requested file
 
         #send code 200 response
         self.send_response(200)

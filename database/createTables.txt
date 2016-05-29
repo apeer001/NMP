@@ -21,7 +21,7 @@ create table network_data
 	admin_username VARCHAR(255) NOT NULL,
 	computer_id INT NOT NULL,
 	computer_IP varchar(255),
-	time_of_update TIMESTAMP,
+	time_of_update DATETIME NOT NULL,
 	computer_status VARCHAR(255),
 	cpu_load INT NOT NULL,
 	computer_temp INT NOT NULL,
