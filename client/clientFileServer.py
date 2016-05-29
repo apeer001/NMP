@@ -6,6 +6,12 @@ import httplib
 
 logFile = 'client_log.txt'
 
+#Functions
+# Make a log file empty
+def emptyFile(pfile):
+    open(pfile, 'w').close()
+    print('deleted contents of file')
+
 #Create custom HTTPRequestHandler class
 class KodeFunHTTPRequestHandler(BaseHTTPRequestHandler):
 		
@@ -28,6 +34,9 @@ class KodeFunHTTPRequestHandler(BaseHTTPRequestHandler):
         #send file content to client
         self.wfile.write(f.read())
         f.close()
+                
+        # Empty log file
+        emptyFile(rootdir + logFile)
         return
       
     except IOError:
