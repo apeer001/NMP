@@ -6,24 +6,31 @@ import MySQLdb
 from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
 import os
 
+# Initial mysql db login
 hostname = "localhost"
 username = "root"
 password = ""
-database = "cs183"
+database = "cs184"
+
+# Name of tables used
+table_user = "users"                            # system admin info
+table_net = "network"                           # client general info
+table_data = "network_data"                     # all client log data
+table_recent = "most_recent_network_status"     # most recent (daily) log data for website
 
 # Functions
 
 # Check if database contains an IP address
 def isIPInDB(ip):
-    db = MySQLdb.connect(host=hostname, # your host, usually localhost
-                         user=username,          # username
-                         passwd=password,        # password
+    db = MySQLdb.connect(host=hostname,     # your host, usually localhost
+                         user=username,     # username
+                         passwd=password,   # password
                          db=database)       # name of the database
 
     # must create a cursor object
     cur = db.cursor()
     try:
-        query_stmt = "SELECT EXISTS(SELECT 1 FROM most_recent_network_status WHERE computer_IP ='" + ip + "' LIMIT 1)"
+        query_stmt = "SELECT EXISTS(SELECT 1 FROM " + table_net + " WHERE computer_IP ='" + ip + "' LIMIT 1)"
         cur.execute(query_stmt)  
         res = 0
         for (result,) in  cur:
@@ -40,55 +47,37 @@ def isIPInDB(ip):
     return 0
 
 # Update MySQL database
-def updateDatabase(update,ip,user='root',status='OK',load=5,temp=10,net_load=20):
+def installNewClient(ip,user='root'):
 
     print('Connecting to Database...')
-    db = MySQLdb.connect(host=hostname, # your host, usually localhost
-                         user=username,          # username
-                         passwd=password,        # password
+    db = MySQLdb.connect(host=hostname,     # your host, usually localhost
+                         user=username,     # username
+                         passwd=password,   # password
                          db=database)       # name of the database
 
     print('Connected to Database')
     # must create a cursor object
     cur = db.cursor()
     try:
-        query_stmt = "SELECT EXISTS(SELECT 1 FROM most_recent_network_status WHERE computer_IP ='" + ip + "' LIMIT 1)"
-        cur.execute(query_stmt)  
-        
-        if update == 1:
-            print('UPDATING')
-            # Update data into mysql database
-            # Data update into the table
-            insert_stmt = (
-                """UPDATE most_recent_network_status
-                SET admin_username=%s, computer_status=%s, cpu_load=%s, computer_temp=%s, network_load=%s
-                WHERE computer_IP=%s"""
-            )
-            data = (user, status, load, temp, net_load, ip)
-                                                                           
-            cur.execute(insert_stmt,data)
-            db.commit()
-    
-        else:
-            print('INSERTING')
-            # Get number of rows 
-            query_stmt = "SELECT COUNT(*) FROM most_recent_network_status"
-            cur.execute(query_stmt)
-            (comp_id,) = cur.fetchone()
+        print('INSERTING')
+        # Get number of rows 
+        query_stmt = "SELECT COUNT(*) FROM " + table_net
+        cur.execute(query_stmt)
+        (comp_id,) = cur.fetchone()
 
-            # Insert data into mysql database
-            # Data Insert into the table
-            insert_stmt = (
-                "INSERT INTO most_recent_network_status (admin_username, computer_id, computer_IP, computer_status, cpu_load, computer_temp, network_load) "
-                "VALUES (%s, %s, %s, %s, %s, %s, %s)"
-            )
-            data = (user, comp_id, ip, status, load, temp, net_load)
+        # Insert data into mysql database
+        # Data Insert into the table
+        insert_stmt = (
+            "INSERT INTO " + table_net + " (admin_username, computer_id, computer_IP, computer_status, cpu_load, computer_temp, network_load) "
+            "VALUES (%s, %s, %s, %s, %s, %s, %s)"
+        )
+        data = (user, comp_id, ip, status, load, temp, net_load)
                                                                            
-            cur.execute(insert_stmt,data)
-            db.commit()
+        cur.execute(insert_stmt,data)
+        db.commit()
 
-            # Get all infor from table
-            cur.execute("SELECT * FROM most_recent_network_status") 
+        # Get all infor from table
+        cur.execute("SELECT * FROM most_recent_network_status") 
        
         # print all the first cell of all the rows
         for row in cur.fetchall():
@@ -98,7 +87,6 @@ def updateDatabase(update,ip,user='root',status='OK',load=5,temp=10,net_load=20)
         print('Rolled back database due to error')
     
     db.close()
-
 
 #Create custom HTTPRequestHandler class
 class KodeFunHTTPRequestHandler(BaseHTTPRequestHandler):
@@ -135,21 +123,7 @@ class KodeFunHTTPRequestHandler(BaseHTTPRequestHandler):
         # Update MySQL database 
         update = isIPInDB(clientAddress)
         if update == 0:
-            updateDatabase(update,clientAddress) 
-        else:
-            updateDatabase(update,clientAddress) 
-            try:
-                if self.path.endswith('.txt'):
-                    if os.path.exists(rootdir + self.path):
-                        f = open(rootdir + self.path, "a") #open requested file, append
-                    else:
-                        f = open(rootdir + self.path, "w") #open requested file, new file
-                
-                    f.write(self.path + '\n') 
-                    f.close()
-            except IOError:
-                self.send_error(404, 'file not found')
-                return 
+            installNewClient(update,clientAddress) 
 
         #send code 200 response
         self.send_response(200)
@@ -201,3 +175,20 @@ if __name__ == '__main__':
     #    print(data_received)
       
     #conn.close()
+
+
+
+
+#try:
+#                if self.path.endswith('.txt'):
+#                    if os.path.exists(rootdir + self.path):
+#                        f = open(rootdir + self.path, "a") #open requested file, append
+#                    else:
+#                        f = open(rootdir + self.path, "w") #open requested file, new file
+#                
+#                    f.write(self.path + '\n') 
+#                    f.close()
+#            except IOError:
+#                self.send_error(404, 'file not found')
+#                return 
+
