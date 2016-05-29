@@ -64,7 +64,8 @@ def updateLogDB(cur,ip,comp_id,logpart,user='root'):
         "INSERT INTO " + table_data + " (admin_username, computer_id, computer_IP, time_of_update, computer_status, cpu_load, computer_temp, network_load, status_description) "
         "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
     )
-    data = (user, comp_id, ip, timestamp, comp_status, cpu_load, comp_temp, net_load, description) 
+    data = (user, comp_id, ip, timestamp, comp_status, cpu_load, comp_temp, net_load, description)
+    print (data) 
     cur.execute(insert_stmt,data)
 
 # Start pulling logs from clients
@@ -94,7 +95,7 @@ def getLogs():
                 for line in lines:
                     logPart = line.split(',')
                     print(logPart)
-                    updateLogDB(comp_ip,comp_id,logPart,admin_user)
+                    updateLogDB(cur,comp_ip,comp_id,logPart,admin_user)
                     db.commit()         
         except:
             db.rollback()
