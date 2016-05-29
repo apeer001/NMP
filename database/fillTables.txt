@@ -1,0 +1,3 @@
+use cs184;
+
+insert into users(username, password, network_size) values("Bob", "Testing", 1);
