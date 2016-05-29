@@ -23,7 +23,7 @@ table_recent = "most_recent_network_status"     # most recent (daily) log data f
 # Functions
 def getLogFromClient(ip):
     #get http server ip
-    http_server = comp_ip
+    http_server = ip
     #create a connection
     conn = httplib.HTTPConnection(http_server,8080)
 
@@ -41,8 +41,8 @@ def getLogFromClient(ip):
 
     return data_received
 
-def updateLogDB(cur,ip,user='root',status='OK',load=5,temp=10,net_load=20):
-    print('UPDATING')   
+def updateLogDB(cur,ip,comp_id,logpart,user='root'):
+    print('INSERTING NEW LOG')   
     if len(logpart) ==  6:                                                  
         timestamp = logpart[0]
         comp_status = logpart[1]
@@ -61,10 +61,10 @@ def updateLogDB(cur,ip,user='root',status='OK',load=5,temp=10,net_load=20):
     # Insert data into mysql database
     # Data Insert into the table
     insert_stmt = (
-        "INSERT INTO " + table_net + " (admin_username, computer_id, computer_IP, computer_status, cpu_load, computer_temp, network_load, status_description) "
-        "VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
+        "INSERT INTO " + table_data + " (admin_username, computer_id, computer_IP, time_of_update, computer_status, cpu_load, computer_temp, network_load, status_description) "
+        "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
     )
-    data = (user, comp_id, ip, status, load, temp, net_load, description) 
+    data = (user, comp_id, ip, timestamp, comp_status, cpu_load, comp_temp, net_load, description) 
     cur.execute(insert_stmt,data)
 
 # Start pulling logs from clients
@@ -83,21 +83,22 @@ def getLogs():
     query_stmt = "SELECT * FROM " + table_net
     cur.execute(query_stmt)  
     for (admin_user,comp_id,comp_ip) in cur.fetchall():
-        print admin_user + " " + comp_id + " " + comp_ip
+        print(admin_user + " " + str(comp_id) + " " + str(comp_ip))
         # Get log data
-        #data_received = getLogsFromClient(comp_id)
-     
+        data_received = getLogFromClient(comp_ip)
         # Input new log data into log table in db
-        #try:
-        #    if len(data_received) > 0:
-        #        lines = data_received.split('\n') 
-        #        for line in data_received:
-        #            logPart = line.split(',')
-        #            updateLogDB(comp_ip,admin_user,comp_id,logpart)
-        #            db.commit()         
-        #except:
-        #    db.rollback()
-        #    print('Rolling back database due to error')
+        try:
+            if len(data_received) > 0:
+                data_received = data_received.strip('\n')
+                lines = data_received.split('\n') 
+                for line in lines:
+                    logPart = line.split(',')
+                    print(logPart)
+                    updateLogDB(comp_ip,comp_id,logPart,admin_user)
+                    db.commit()         
+        except:
+            db.rollback()
+            print('Rolling back database due to error')
     
     db.close()
     return 0

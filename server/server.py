@@ -47,7 +47,7 @@ def isIPInDB(ip):
     return 0
 
 # Update MySQL database
-def installNewClient(ip,user='root'):
+def installNewClient(ip,usr='root'):
 
     print('Connecting to Database...')
     db = MySQLdb.connect(host=hostname,     # your host, usually localhost
@@ -64,18 +64,19 @@ def installNewClient(ip,user='root'):
         query_stmt = "SELECT COUNT(*) FROM " + table_net
         cur.execute(query_stmt)
         (comp_id,) = cur.fetchone()
-
+        print(comp_id)
         # Insert data into mysql database
         # Data Insert into the table
         insert_stmt = (
-            "INSERT INTO " + table_net + " (admin_username, computer_id, computer_IP, computer_status, cpu_load, computer_temp, network_load) "
-            "VALUES (%s, %s, %s, %s, %s, %s, %s)"
+            "INSERT INTO " + table_net + " (username, computer_id, computer_IP) "
+            "VALUES (%s, %s, %s)"
         )
-        data = (user, comp_id, ip, status, load, temp, net_load)
+        data = (usr, comp_id, ip)
                                                                            
         cur.execute(insert_stmt,data)
         db.commit()
 
+        print('commited all data')
         # Get all infor from table
         cur.execute("SELECT * FROM most_recent_network_status") 
        
@@ -123,7 +124,7 @@ class KodeFunHTTPRequestHandler(BaseHTTPRequestHandler):
         # Update MySQL database 
         update = isIPInDB(clientAddress)
         if update == 0:
-            installNewClient(update,clientAddress) 
+            installNewClient(clientAddress) 
 
         #send code 200 response
         self.send_response(200)
