@@ -1,6 +1,6 @@
-  function init_table(tablename) {
+  function init_table(tableid) {
     $(document).ready(function() {
-      $(tablename).DataTable( {
+      $('#example' + tableid).DataTable( {
         "scrollY":        "200px",
         "scrollCollapse": true,
         "paging":         false
