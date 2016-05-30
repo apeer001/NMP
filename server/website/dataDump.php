@@ -53,30 +53,41 @@
     $conn = mysql_connect($hostname, $username, $password) or die("Unable to connect to MySQL"); 
     $select = mysql_select_db("cs184", $conn) or die("Could not select CS184");
 
-    $result = mysql_query("SELECT * FROM network_data");  
+    $result1 = mysql_query("SELECT * FROM network WHERE computer_id=\'$id\'");  
+    while($row1 = mysql_fectch_array($result1)) {
+      $id = $row1['computer_id'];
+      $result2 = mysql_query("SELECT * FROM network_data WHERE computer_id=\'$id\'");  
           
-    echo "<table id=\"example\" class=\"display\" cellspacing=\"0\" width=\"100%\" align=\"center\" >";
-    echo "<thead>";
-    echo " <tr> <th>admin_username</th> <th>computer_id</th> <th>time_of_update</th> <th>computer_status</th>  <th>cpu_load</th>  <th>computer_temp</th>  <th>network_load</th>  <th>status_description</th> </tr>";
-    echo "</thead>";
-    echo "<tbody>";
-    while($row = mysql_fetch_array($result))
-    {
-      echo "<tr>";
-      echo "<td align=\"center\">" . $row['admin_username'] . "</td>";
-      echo "<td align=\"center\">" . $row['computer_id'] . "</td>";
-      echo "<td align=\"center\">" . $row['time_of_update'] . "</td>";  
-      echo "<td align=\"center\">" . $row['computer_status'] . "</td>";
-      echo "<td align=\"center\">" . $row['cpu_load'] . "</td>";
-      echo "<td align=\"center\">" . $row['computer_temp'] . "</td>";
-      echo "<td align=\"center\">" . $row['network_load'] . "</td>";
-      echo "<td align=\"center\">" . $row['status_description'] . "</td>";
-      echo "</tr>";
+      // Label for table
+      echo "<div>";
+      echo "<h1><b>Client Computer $id</b></h1>";
+      echo "</div>";
+      // Build table
+      echo "<table id=\"example\" class=\"display\" cellspacing=\"0\" width=\"100%\" align=\"center\" >";
+      echo "<thead>";
+      echo " <tr> <th>admin_username</th> <th>computer_id</th> <th>time_of_update</th> <th>computer_status</th>  <th>cpu_load</th>  <th>computer_temp</th>  <th>network_load</th>  <th>status_description</th> </tr>";
+      echo "</thead>";
+      echo "<tbody>";
+      // Insert row data
+      while($row2 = mysql_fetch_array($result2))
+      {
+        echo "<tr>";
+        echo "<td align=\"center\">" . $row2['admin_username'] . "</td>";
+        echo "<td align=\"center\">" . $row2['computer_id'] . "</td>";
+        echo "<td align=\"center\">" . $row2['time_of_update'] . "</td>";  
+        echo "<td align=\"center\">" . $row2['computer_status'] . "</td>";
+        echo "<td align=\"center\">" . $row2['cpu_load'] . "</td>";
+        echo "<td align=\"center\">" . $row2['computer_temp'] . "</td>";
+        echo "<td align=\"center\">" . $row2['network_load'] . "</td>";
+        echo "<td align=\"center\">" . $row2['status_description'] . "</td>";
+        echo "</tr>";
+      }
+      echo "</tbody>";
+      echo "</table>";
     }
-    echo "</tbody>";
-    echo "</table>";
   
-    mysql_free_result($result); 
+    mysql_free_result($result2); 
+    mysql_free_result($result1); 
     mysql_close($conn);
   ?> 
 </div>
