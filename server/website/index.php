@@ -41,7 +41,7 @@
   </div>
 </div>
 
-<div class="marLeft30">
+<div class="tableMargin">
 
 	<?php 
 		// Connect to the MySQL db 
