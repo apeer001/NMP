@@ -3,10 +3,24 @@
 from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
 import os
 import httplib
+import socket, struct, fcntl
 
 logFile = 'client_log.txt'
 
+sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+sockfd = sock.fileno()
+SIOCGIFADDR = 0x8915
+
 #Functions
+def get_ip(iface = 'eth0'):
+    ifreq = struct.pack('16sH14s', iface, socket.AF_INET, '\x00'*14)
+    try:
+        res = fcntl.ioctl(sockfd, SIOCGIFADDR, ifreq)
+    except:
+        return None
+    ip = struct.unpack('16sH2x4s8x', res)[2]
+    return socket.inet_ntoa(ip)
+
 # Make a log file empty
 def emptyFile(pfile):
     open(pfile, 'w').close()
@@ -82,7 +96,8 @@ def runClientFileServer():
 
   #ip and port of servr
   #by default http server port is 80, we set it to 8080
-  server_address = ('172.31.26.65', 8080)
+  ip = get_ip('eth0')
+  server_address = (ip, 8080)
   httpd = HTTPServer(server_address, KodeFunHTTPRequestHandler)
   print('http server is running...')
   httpd.serve_forever()
