@@ -1,7 +1,7 @@
 #!/bin/sh
 
 sudo cp ./index.php /var/www/html/
-sudo cp ./about.html /var/www/html/
+sudo cp ./dataDump.php /var/www/html/
 sudo cp ./contact.html /var/www/html/
 sudo cp ./services.html /var/www/html/
 sudo cp ./.htaccess /var/www/html/
