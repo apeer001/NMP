@@ -5,7 +5,7 @@
 <meta http-equiv="refresh" content="5" />
 <title>NMP</title>
 <link href="css/styles.css" rel="stylesheet" type="text/css" />
-<link href="css/jquery.dataTable.min.css" rel="stylesheet" type="text/css" />
+<link href="css/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />
 
 <script type="text/javascript" src="js/jquery-1.12.3.min.js"></script>
 <script type="text/javascript" src="js/jquery.dataTables.min.js"></script>
@@ -13,7 +13,7 @@
   	$(document).ready(function() {
     	$('#example').DataTable( {
       	"scrollY":        "200px",
-        "scrollCollapse": false,
+        "scrollCollapse": true,
         "paging":         false
     	} );
 		} );
