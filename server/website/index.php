@@ -5,6 +5,20 @@
 <meta http-equiv="refresh" content="5" />
 <title>NMP</title>
 <link href="css/styles.css" rel="stylesheet" type="text/css" />
+<link href="css/jquery.dataTable.min.css" rel="stylesheet" type="text/css" />
+
+<script type="text/javascript" src="js/jquery-1.12.3.min.js"></script>
+<script type="text/javascript" src="js/jquery.dataTables.min.js"></script>
+<script type="text/javascript">
+  	$(document).ready(function() {
+    	$('#example').DataTable( {
+      	"scrollY":        "200px",
+        "scrollCollapse": true,
+        "paging":         false
+    	} );
+		} );
+</script>
+
 </head>
 <body>
 <div class="menu-wrapper">
@@ -64,5 +78,6 @@
 		mysql_free_result($result); 
 		mysql_close($conn);
 	?> 
+	
 </body>
 </html>
