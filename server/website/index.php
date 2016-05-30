@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta http-equiv="refresh" content="5" />
+<meta http-equiv="refresh" content="60" />
 <title>NMP</title>
 <link href="css/styles.css" rel="stylesheet" type="text/css" />
 <link href="css/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />
