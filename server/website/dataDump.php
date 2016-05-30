@@ -78,7 +78,7 @@
       echo "</tbody>";
       echo "</table>";
 
-      echo "<script type=\"text/javascript\" >init_table('#example" . $id ."')</script>"
+      //echo "<script type=\"text/javascript\" >init_table('#example" . $id ."')</script>"
     }
   
     mysql_free_result($result2); 
