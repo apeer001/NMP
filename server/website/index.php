@@ -54,7 +54,7 @@
 					
 		echo "<table id=\"example\" class=\"display\" cellspacing=\"0\" width=\"100%\">";
 		echo "<thead>";
-		echo " <tr> <th>admin_username</th> <th>computer_id</th> <th>computer_IP</th> <th>time_of_update</th> <th>computer_status</th>  <th>cpu_load</th>  <th>computer_temp</th>  <th>network_load</th>  <th>status_description</th> </tr>";
+		echo " <tr> <th>admin_username</th> <th>computer_id</th> <th>time_of_update</th> <th>computer_status</th>  <th>cpu_load</th>  <th>computer_temp</th>  <th>network_load</th>  <th>status_description</th> </tr>";
 
 		echo "</thead>";
 		echo "<tbody>";
@@ -63,7 +63,6 @@
 			echo "<tr>";
 			echo '<td>' . $row['admin_username'] . '</td>';
 			echo "<td>" . $row['computer_id'] . "</td>";
-			echo "<td>" . $row['computer_IP'] . "</td>";
 			echo "<td>" . $row['time_of_update'] . "</td>";	
 			echo "<td>" . $row['computer_status'] . "</td>";
 			echo "<td>" . $row['cpu_load'] . "</td>";
@@ -71,7 +70,6 @@
 			echo "<td>" . $row['network_load'] . "</td>";
 			echo "<td>" . $row['status_description'] . "</td>";
 			echo "</tr>";
-			
 		}
 		echo "</tbody>";
 		echo "</table>";
