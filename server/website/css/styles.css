@@ -1,16 +1,16 @@
 /*-------------------------------------------------
 GLOBALS CLASSES
 -------------------------------------------------*/
-*{margin:0; padding:0; font-family:"Trebuchet MS";}
-body{background:#26313f;}
+*{margin:0; padding:0; font-family:"Calibri";}
+body{background:#fffff;}
 
-p {font-family:"Trebuchet MS"; color:#576679; font-size:13px; line-height:20px;}
+p {font-family:"Calibri"; color:#000000; font-size:13px; line-height:20px;}
 a { text-decoration:none; color:#576679;}
 a:hover { text-decoration:none; color:#96577a;}
 ul li { list-style:none; outline:none;}
 img { border:none; }
 img { border:none;}
-h1{font-family:"Trebuchet MS"; color:#838d9d; font-size:22px; font-weight:normal; text-transform:uppercase;}
+h1{font-family:"Calibri"; color:#838d9d; font-size:22px; font-weight:normal; text-transform:uppercase;}
 h2{font-family: 'Open Sans', sans-serif; font-size:15px; color:#96577a; font-weight:normal;}
 
 /*-------------------------------------------------
@@ -41,12 +41,12 @@ CSS TWEAKS
 /*-------------------------------------------------
 HEADER CLASSES
 -------------------------------------------------*/
-.menu-wrapper{width:1000px; margin:0 auto; margin-top:116px; background:#2e3b4b; overflow:hidden;}
-.menu{width:534px; float:left; margin-top:20px; margin-left:20px; margin-bottom:20px}
+.menu-wrapper{width:1000px; margin:left auto; margin-top:0px; background:#ffffff; overflow:hidden;}
+.menu{width:534px; margin-top:0px; margin-left:0px; margin-bottom:20px}
 .menu ul li{float:left; width:100px; margin-right:4px;}
 .menu ul li a{width:100px; height:40px; line-height:40px; display:block; font-family: 'Open Sans', sans-serif; font-size:14px; color:#96577a; text-align:center; text-transform:uppercase;}
-.menu ul li a:hover{background:#96577a; color:#ffffff; width:100px; height:40px;}
-.menu ul li a.active{background:#96577a; color:#ffffff; width:100px; height:40px;}
+.menu ul li a:hover{background:#000000; color:#ffffff; width:100px; height:40px;}
+.menu ul li a.active{background:#000000; color:#ffffff; width:100px; height:40px;}
 
 .call{width:194px; float:right; margin-right:17px;}
 .call h1{font-family: 'Open Sans', sans-serif; font-size:14px; color:#96577a; text-transform:uppercase; line-height:80px;}
@@ -54,11 +54,11 @@ HEADER CLASSES
 
 .border-bottom{width:100%; background:url(../images/dotted-line.jpg) repeat-x; height:1px;}
 
-.logo-wrapper{width:1020px; margin:0 auto; overflow:hidden;}
+.logo-wrapper{width:1020px; margin:0 auto; margin-left:0px ; overflow:hidden;}
 .leftshadow{width:10px; float:left;}
 .rightshadow{width:10px; float:right;}
 .logo{width:1000px; float:left;}
-.logo h1{font-family:"Trebuchet MS"; font-size:42px; color:#838d9d; text-transform:uppercase; padding-left:20px; padding-top:25px;}
+.logo h1{font-family:"Calibri"; font-size:42px; color:#000000; text-transform:uppercase; padding-left:0px; padding-top:0px;}
 
 /*-------------------------------------------------
 BANNER CLASSES
@@ -70,9 +70,9 @@ BANNER CLASSES
 .banner{width:960px; height:370px; background:url(../images/img-1.jpg) no-repeat; margin:0 auto;}
 .banner-shadow{width:960px; margin:0 auto;}
 .banner-content{width:560px; margin:0 auto; padding-top:70px;}
-.banner-content h1{font-family:"Trebuchet MS"; font-size:49px; color:#ffffff; text-align:center;}
-.banner-content h2{font-family:"Trebuchet MS"; font-size:30px; color:#ffffff; text-align:center; text-transform:lowercase; padding-bottom:42px; }
-.banner-content a{display:block; width:200px; height:54px; line-height:54px; background:#96577a; font-family:"Trebuchet MS"; font-size:29px; color:#ffffff; text-align:center; text-transform:uppercase; margin-top:50px; margin:0 auto;}
+.banner-content h1{font-family:"Calibri"; font-size:49px; color:#ffffff; text-align:center;}
+.banner-content h2{font-family:"Calibri"; font-size:30px; color:#ffffff; text-align:center; text-transform:lowercase; padding-bottom:42px; }
+.banner-content a{display:block; width:200px; height:54px; line-height:54px; background:#96577a; font-family:"Calibri"; font-size:29px; color:#ffffff; text-align:center; text-transform:uppercase; margin-top:50px; margin:0 auto;}
 .banner-content a:hover{background:#26313f; color:#838d9d;}
 
 /*-------------------------------------------------
@@ -82,14 +82,14 @@ GENERAL CLASSES
 .title {}
 .content { overflow:hidden; font-size:13px;}
 .button-link{ }
-.button-link a{font-family: "Trebuchet MS"; text-transform:uppercase; font-size:13px; text-align:center; color:#ffffff; background:#96577a; width:90px; height:30px; line-height:30px; display:block;}
+.button-link a{font-family: "Calibri"; text-transform:uppercase; font-size:13px; text-align:center; color:#ffffff; background:#96577a; width:90px; height:30px; line-height:30px; display:block;}
 .button-link a:hover{color:#000000; background:#838d9d;}
 .container{width:100%; overflow:hidden; background:#2c3847; padding-bottom:40px;}
 /*-------------------------------------------------
 LAYOUT CLASSS
 -------------------------------------------------*/
 .page-wrapper { width:960px; margin:0 auto;  overflow:hidden; background:#26313f; padding-top:40px;}
-.primary-content {float:left; width:600px; overflow:hidden; margin-left:30px;}
+.primary-content {float:left; width:600px; overflow:hidden; margin-left:0px;}
 .sidebar { float:left; width:300px; overflow:hidden;}
 
 /*-------------------------------------------------
@@ -104,7 +104,7 @@ PRIMARY CONTENT CLASSS
 /*-------------------------------------------------
 SIDEBAR CLASSS
 -------------------------------------------------*/
-.sidebar .panel{width:270px; height:190px; background:#576679; margin-left:30px;}
+.sidebar .panel{width:270px; height:190px; background:#576679; margin-left:0px;}
 .sidebar .img{width:254px; height:174px; padding:8px;}
 
 /*-------------------------------------------------
@@ -129,13 +129,13 @@ PANEL CLASSS
 
 .right-panel{width:100%; overflow:hidden; padding-bottom:43px;}
 .right-panel ul li{display:block; border-bottom:1px solid #364658; height:40px; line-height:40px;}
-.right-panel ul li a{ont-family:"Trebuchet MS"; color:#576679; font-size:13px; text-decoration:none; background:url(../images/icon-circle.png) no-repeat; padding-left:25px;}
+.right-panel ul li a{ont-family:"Calibri"; color:#576679; font-size:13px; text-decoration:none; background:url(../images/icon-circle.png) no-repeat; padding-left:25px;}
 .right-panel ul li a:hover{color:#96577a;}
 .right-panel ul li.borderNone{border-bottom:none;}
 
 .contact{width:100%;}
-.contact-input{width:100%; height:35px; background:#2c3847; padding-left:10px; font-family:"Trebuchet MS"; font-size:13px; color:#576679; border:none; margin-bottom:20px;}
-.contact-comments{width:100%; height:126px; background:#2c3847; padding-left:10px; font-family:"Trebuchet MS"; font-size:13px; color:#576679;  border:none; margin-bottom:20px;}
+.contact-input{width:100%; height:35px; background:#2c3847; padding-left:10px; font-family:"Calibri"; font-size:13px; color:#576679; border:none; margin-bottom:20px;}
+.contact-comments{width:100%; height:126px; background:#2c3847; padding-left:10px; font-family:"Calibri"; font-size:13px; color:#576679;  border:none; margin-bottom:20px;}
 
 .midcontent{width:300px; overflow:hidden;}
 .midcontentlink{width:130px; float:left;}
@@ -172,7 +172,7 @@ PORTFOLIO CLASSES
 .portfolio .panel .content { padding:10px; padding-bottom:20px;}
 .portfolio .panel .content p{ padding-bottom:20px;}
 .portfolio .panel .content p span{ padding-bottom:10px; border-bottom: 1px solid #333f4e;  color:#96577a; display:block; font-size:14px;}
-.portfolio .panel .content a {background:#96577a; padding:7px; text-decoration:none; font-family:"Trebuchet MS"; color:#ffffff; font-weight:normal; font-size:13px;}
+.portfolio .panel .content a {background:#96577a; padding:7px; text-decoration:none; font-family:"Calibri"; color:#ffffff; font-weight:normal; font-size:13px;}
 .portfolio .panel .content a:hover { background:#576679;}
 .portfolio .panel .content img{ padding-bottom:10px;}
 
@@ -186,7 +186,7 @@ CONTACT FORM CLASSS
 .contact-form label span {display: block; color:#576679;font-size:14px; float:left; width:80px; text-align:left; padding:5px 20px 0 0;}
 .contact-form .input_text {padding:10px 10px;width:420px;background:#838d9d;border:none; color:#576679;}
 .contact-form .message{padding:10px 10px;width:420px; background:#838d9d; border:none;overflow:hidden;height:150px; color:#576679; font-size:14px;}
-.contact-form .button{padding:8px;background:#96577a;text-transform:uppercase;font-family:"Trebuchet MS"; color:#fff;border:0px solid;margin-left:100px;margin-top:20px;}
+.contact-form .button{padding:8px;background:#96577a;text-transform:uppercase;font-family:"Calibri"; color:#fff;border:0px solid;margin-left:0px;margin-top:20px;}
 
 .address { padding:30px; float:left; width:520px;}
 .address .panel { border-bottom:none; color:#9b9e9a; background:none; float:left; margin-bottom:30px; padding:0px; width:260px;}
