@@ -37,8 +37,12 @@
 
 		$result = mysql_query("SELECT * FROM network_data");	
 					
-		echo "<table border='2'> <tr> <th>admin_username</th> <th>computer_id</th> <th>computer_IP</th> <th>time_of_update</th> <th>computer_status</th>  <th>cpu_load</th>  <th>computer_temp</th>  <th>network_load</th>  <th>status_description</th> </tr>";
+		echo "<table id=\"example\" class=\"display\" cellspacing=\"0\" width=\"100%\">";
+		echo "<thead>";
+		echo " <tr> <th>admin_username</th> <th>computer_id</th> <th>computer_IP</th> <th>time_of_update</th> <th>computer_status</th>  <th>cpu_load</th>  <th>computer_temp</th>  <th>network_load</th>  <th>status_description</th> </tr>";
 
+		echo "</thead>"
+		echo "<tbody>";
 		while($row = mysql_fetch_array($result))
 		{
 			echo "<tr>";
@@ -54,6 +58,7 @@
 			echo "</tr>";
 			
 		}
+		echo "</tbody>>";
 		echo "</table>";
 	
 		mysql_free_result($result); 
