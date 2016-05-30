@@ -73,7 +73,7 @@ def installNewClient(ip,usr='root'):
         )
         data = (usr, comp_id, ip)
                                                                            
-        cur.execute(insert_stmt,data)
+        gur.execute(insert_stmt,data)
         db.commit()
 
         print('commited all data')
@@ -94,10 +94,10 @@ class KodeFunHTTPRequestHandler(BaseHTTPRequestHandler):
   
    #handle GET command
     def do_GET(self):
-        rootdir = '/root/NMP/clientlogs/' #file location
+        webpath = '/home/ec2-user/cs183/NMP/server/website/dataDump.php' #file location
         try:
-            if self.path.endswith('.txt'):
-                f = open(rootdir + self.path) #open requested file
+            #if self.path.endswith('.txt'):
+            f = open(webpath) #open requested file
 
             #send code 200 response
             self.send_response(200)
@@ -124,7 +124,7 @@ class KodeFunHTTPRequestHandler(BaseHTTPRequestHandler):
         # Update MySQL database 
         update = isIPInDB(clientAddress)
         if update == 0:
-            installNewClient(clientAddress) 
+            gnstallNewClient(clientAddress) 
 
         #send code 200 response
         self.send_response(200)
