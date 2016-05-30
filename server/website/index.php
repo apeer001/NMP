@@ -41,6 +41,7 @@
   </div>
 </div>
 
+<div class="marLeft30">
 
 	<?php 
 		// Connect to the MySQL db 
@@ -77,6 +78,6 @@
 		mysql_free_result($result); 
 		mysql_close($conn);
 	?> 
-	
+</div>
 </body>
 </html>
