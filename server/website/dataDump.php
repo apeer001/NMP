@@ -53,14 +53,14 @@
     $conn = mysql_connect($hostname, $username, $password) or die("Unable to connect to MySQL"); 
     $select = mysql_select_db("cs184", $conn) or die("Could not select CS184");
 
-    $result1 = mysql_query("SELECT * FROM network WHERE computer_id=\'$id\'");  
+    $result1 = mysql_query("SELECT * FROM network");  
     while($row1 = mysql_fectch_array($result1)) {
       $id = $row1['computer_id'];
-      $result2 = mysql_query("SELECT * FROM network_data WHERE computer_id=\'$id\'");  
+      $result2 = mysql_query("SELECT * FROM network_data WHERE computer_id='" . $id . "'");  
           
       // Label for table
       echo "<div>";
-      echo "<h1><b>Client Computer $id</b></h1>";
+      echo "<h1><b>Client Computer " . $id . "</b></h1>";
       echo "</div>";
       // Build table
       echo "<table id=\"example\" class=\"display\" cellspacing=\"0\" width=\"100%\" align=\"center\" >";
