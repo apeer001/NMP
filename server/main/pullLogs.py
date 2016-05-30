@@ -86,20 +86,23 @@ def getLogs():
     for (admin_user,comp_id,comp_ip) in cur.fetchall():
         print(admin_user + " " + str(comp_id) + " " + str(comp_ip))
         # Get log data
-        data_received = getLogFromClient(comp_ip)
-        if data_received.find('HTTP/1.0 404 file not found') == -1:
-            # Input new log data into log table in db
-            try:
-                if len(data_received) > 0:
-                    data_received = data_received.strip('\n')
-                    lines = data_received.split('\n') 
-                    for line in lines:
-                        logPart = line.split(',')
-                        updateLogDB(cur,comp_ip,comp_id,logPart,admin_user)
-                        db.commit()         
-            except:
-                db.rollback()
-                print('Rolling back database due to error')
+        try:
+            data_received = getLogFromClient(comp_ip)
+            if data_received.find('HTTP/1.0 404 file not found') == -1:
+                # Input new log data into log table in db
+                try:
+                    if len(data_received) > 0:
+                        data_received = data_received.strip('\n')
+                        lines = data_received.split('\n') 
+                        for line in lines:
+                            logPart = line.split(',')
+                            updateLogDB(cur,comp_ip,comp_id,logPart,admin_user)
+                            db.commit()         
+                except:
+                    db.rollback()
+                    print('Rolling back database due to error')
+        except:
+            print('Unable to connect to ' + comp_ip)
     
     db.close()
     return 0

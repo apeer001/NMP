@@ -73,7 +73,7 @@ def installNewClient(ip,usr='root'):
         )
         data = (usr, comp_id, ip)
                                                                            
-        gur.execute(insert_stmt,data)
+        cur.execute(insert_stmt,data)
         db.commit()
 
         print('commited all data')
@@ -118,13 +118,13 @@ class KodeFunHTTPRequestHandler(BaseHTTPRequestHandler):
     def do_POST(self):
         rootdir = '/home/ec2-user/clientlogs/' #client log location
         if not os.path.exists(rootdir):
-                os.makedirs(rootdir)
+            os.makedirs(rootdir)
         clientAddress = self.client_address[0]
         
         # Update MySQL database 
         update = isIPInDB(clientAddress)
         if update == 0:
-            gnstallNewClient(clientAddress) 
+            installNewClient(clientAddress) 
 
         #send code 200 response
         self.send_response(200)
