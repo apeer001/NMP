@@ -53,7 +53,7 @@
 
 		$result = mysql_query("SELECT * FROM network_data");	
 					
-		echo "<table id=\"example\" class=\"display\" cellspacing=\"0\" width=\"100%\" align=\"center\"  style=\"margin-right:100\">";
+		echo "<table id=\"example\" class=\"display\" cellspacing=\"0\" width=\"100%\" align=\"center\"  style=\"tableMargin\">";
 		echo "<thead>";
 		echo " <tr> <th>admin_username</th> <th>computer_id</th> <th>time_of_update</th> <th>computer_status</th>  <th>cpu_load</th>  <th>computer_temp</th>  <th>network_load</th>  <th>status_description</th> </tr>";
 
