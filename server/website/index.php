@@ -1,4 +1,4 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!DOCTYPE HTML>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -16,7 +16,7 @@
         "scrollCollapse": true,
         "paging":         false
     	} );
-		} );
+	} );
 </script>
 
 </head>
@@ -25,10 +25,12 @@
   <div class="menu">
     <ul>
       <li><a href="index.php" class="active">home</a></li>
-      <li><a href="about.html">about</a></li>
+      <li><a href="dataDump.php">All Data</a></li>
+      <!--
       <li><a href="services.html">services</a></li>
       <li><a href="works.html">works</a></li>
       <li><a href="contact.html">contact</a></li>
+  	  -->
     </ul>
   </div>
 </div>
