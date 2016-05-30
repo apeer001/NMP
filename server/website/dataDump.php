@@ -9,17 +9,7 @@
 
 <script type="text/javascript" src="js/jquery-1.12.3.min.js"></script>
 <script type="text/javascript" src="js/jquery.dataTables.min.js"></script>
-<script type="text/javascript">
-  function init_table(tablename) {
-    $(document).ready(function() {
-      $(tablename).DataTable( {
-        "scrollY":        "200px",
-        "scrollCollapse": true,
-        "paging":         false
-      } );
-    } );
-  }
-</script>
+<script type="text/javascript" src="js/initTables.js"></script>
 
 </head>
 <body>
