@@ -10,21 +10,15 @@
 <script type="text/javascript" src="js/jquery-1.12.3.min.js"></script>
 <script type="text/javascript" src="js/jquery.dataTables.min.js"></script>
 <script type="text/javascript">
+  function init_table(tablename) {
     $(document).ready(function() {
-      $('#example0').DataTable( {
+      $(tablename).DataTable( {
         "scrollY":        "200px",
         "scrollCollapse": true,
         "paging":         false
       } );
     } );
-
-     $(document).ready(function() {
-      $('#example1').DataTable( {
-        "scrollY":        "200px",
-        "scrollCollapse": true,
-        "paging":         false
-      } );
-    } );
+  }
 </script>
 
 </head>
@@ -93,6 +87,8 @@
       }
       echo "</tbody>";
       echo "</table>";
+
+      echo "<script type=\"text/javascript\" >init_table('#example" . $id ."')</script>"
     }
   
     mysql_free_result($result2); 
