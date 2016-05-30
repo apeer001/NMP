@@ -39,8 +39,9 @@
   <div class="logo">
     <h1>NMP Alert viewer</h1>
   </div>
-
 </div>
+
+
 	<?php 
 		// Connect to the MySQL db 
 		$username = "root";
@@ -72,7 +73,7 @@
 			echo "</tr>";
 			
 		}
-		echo "</tbody>>";
+		echo "</tbody>";
 		echo "</table>";
 	
 		mysql_free_result($result); 
