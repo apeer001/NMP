@@ -13,7 +13,7 @@
   	$(document).ready(function() {
     	$('#example').DataTable( {
       	"scrollY":        "200px",
-        "scrollCollapse": true,
+        "scrollCollapse": false,
         "paging":         false
     	} );
 		} );
@@ -55,7 +55,7 @@
 		echo "<thead>";
 		echo " <tr> <th>admin_username</th> <th>computer_id</th> <th>computer_IP</th> <th>time_of_update</th> <th>computer_status</th>  <th>cpu_load</th>  <th>computer_temp</th>  <th>network_load</th>  <th>status_description</th> </tr>";
 
-		echo "</thead>"
+		echo "</thead>";
 		echo "<tbody>";
 		while($row = mysql_fetch_array($result))
 		{
