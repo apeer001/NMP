@@ -56,7 +56,7 @@
       echo "<h1><b>Client Computer " . $id . "</b></h1>";
       echo "</div>";
       // Build table
-      echo "<script type=\"text/javascript\" >init_table('#example" . $id ."')</script>"
+      echo "<script type=\"text/javascript\" src=\"js/initTables.js\">init_table('#example" . $id ."')</script>"
       echo "<table id=\"example" . $id . "\" class=\"display\" cellspacing=\"0\" width=\"100%\" align=\"center\" >";
       echo "<thead>";
       echo " <tr> <th>admin_username</th> <th>computer_id</th> <th>time_of_update</th> <th>computer_status</th>  <th>cpu_load</th>  <th>computer_temp</th>  <th>network_load</th>  <th>status_description</th> </tr>";
