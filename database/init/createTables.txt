@@ -6,7 +6,10 @@ create table users
 	username VARCHAR(255) UNIQUE NOT NULL,
 	password VARCHAR(255) NOT NULL,
 	network_size INT NOT NULL,
-	PRIMARY KEY (user_id)
+	phone_number INT,
+	email_address varchar(255),
+	PRIMARY KEY (user_id),
+	UNIQUE KEY (username)
 );
 
 create table network 
