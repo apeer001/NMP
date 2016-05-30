@@ -56,6 +56,8 @@
     $result1 = mysql_query("SELECT * FROM network");  
     while($row1 = mysql_fectch_array($result1)) {
       $id = $row1['computer_id'];
+      echo $id;
+      /*
       $result2 = mysql_query("SELECT * FROM network_data WHERE computer_id='" . $id . "'");  
           
       // Label for table
@@ -84,6 +86,7 @@
       }
       echo "</tbody>";
       echo "</table>";
+      */
     }
   
     mysql_free_result($result2); 
