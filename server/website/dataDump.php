@@ -52,7 +52,7 @@
     $hostname = "localhost";
     $conn = mysql_connect($hostname, $username, $password) or die("Unable to connect to MySQL"); 
     $select = mysql_select_db("cs184", $conn) or die("Could not select CS184");
-    echo "connected to database";
+    
     $result1 = mysql_query("SELECT * FROM network");  
     while($row1 = mysql_fetch_array($result1)) {
       $id = $row1['computer_id'];
