@@ -53,7 +53,7 @@
 		$conn = mysql_connect($hostname, $username, $password) or die("Unable to connect to MySQL"); 
 		$select = mysql_select_db("cs184", $conn) or die("Could not select CS184");
 
-		$result = mysql_query("SELECT * FROM network_data");	
+		$result = mysql_query("SELECT * FROM  most_recent_network_status");	
 					
 		echo "<table id=\"example\" class=\"display\" cellspacing=\"0\" width=\"100%\" align=\"center\" >";
 		echo "<thead>";
