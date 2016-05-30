@@ -62,14 +62,14 @@
 		while($row = mysql_fetch_array($result))
 		{
 			echo "<tr>";
-			echo '<td>' . $row['admin_username'] . '</td>';
-			echo "<td>" . $row['computer_id'] . "</td>";
-			echo "<td>" . $row['time_of_update'] . "</td>";	
-			echo "<td>" . $row['computer_status'] . "</td>";
-			echo "<td>" . $row['cpu_load'] . "</td>";
-			echo "<td>" . $row['computer_temp'] . "</td>";
-			echo "<td>" . $row['network_load'] . "</td>";
-			echo "<td>" . $row['status_description'] . "</td>";
+			echo "<td align=\"left\">" . $row['admin_username'] . "</td>";
+			echo "<td align=\"left\">" . $row['computer_id'] . "</td>";
+			echo "<td align=\"left\">" . $row['time_of_update'] . "</td>";	
+			echo "<td align=\"left\">" . $row['computer_status'] . "</td>";
+			echo "<td align=\"left\">" . $row['cpu_load'] . "</td>";
+			echo "<td align=\"left\">" . $row['computer_temp'] . "</td>";
+			echo "<td align=\"left\">" . $row['network_load'] . "</td>";
+			echo "<td align=\"left\">" . $row['status_description'] . "</td>";
 			echo "</tr>";
 		}
 		echo "</tbody>";
