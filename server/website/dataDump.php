@@ -11,7 +11,15 @@
 <script type="text/javascript" src="js/jquery.dataTables.min.js"></script>
 <script type="text/javascript">
     $(document).ready(function() {
-      $('#example').DataTable( {
+      $('#example0').DataTable( {
+        "scrollY":        "200px",
+        "scrollCollapse": true,
+        "paging":         false
+      } );
+    } );
+
+     $(document).ready(function() {
+      $('#example1').DataTable( {
         "scrollY":        "200px",
         "scrollCollapse": true,
         "paging":         false
@@ -53,6 +61,7 @@
     $conn = mysql_connect($hostname, $username, $password) or die("Unable to connect to MySQL"); 
     $select = mysql_select_db("cs184", $conn) or die("Could not select CS184");
     
+    $cnt = mysql_query("SELECT COUNT(*) FROM network");  
     $result1 = mysql_query("SELECT * FROM network");  
     while($row1 = mysql_fetch_array($result1)) {
       $id = $row1['computer_id'];
@@ -63,7 +72,7 @@
       echo "<h1><b>Client Computer " . $id . "</b></h1>";
       echo "</div>";
       // Build table
-      echo "<table id=\"example\" class=\"display\" cellspacing=\"0\" width=\"100%\" align=\"center\" >";
+      echo "<table id=\"example" . $id . "\" class=\"display\" cellspacing=\"0\" width=\"100%\" align=\"center\" >";
       echo "<thead>";
       echo " <tr> <th>admin_username</th> <th>computer_id</th> <th>time_of_update</th> <th>computer_status</th>  <th>cpu_load</th>  <th>computer_temp</th>  <th>network_load</th>  <th>status_description</th> </tr>";
       echo "</thead>";
@@ -86,8 +95,9 @@
       echo "</table>";
     }
   
-    //mysql_free_result($result2); 
-    mysql_free_result($result1); 
+    mysql_free_result($result2); 
+    mysql_free_result($result1);
+    mysql_free_result($cnt); 
     mysql_close($conn);
   ?> 
 </div>
