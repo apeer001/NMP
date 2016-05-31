@@ -78,7 +78,7 @@ def installNewClient(ip,usr='root'):
 
         print('commited all data')
         # Get all infor from table
-        cur.execute("SELECT * FROM most_recent_network_status") 
+        cur.execute("SELECT * FROM " + table_recent) 
        
         # print all the first cell of all the rows
         for row in cur.fetchall():
@@ -89,30 +89,64 @@ def installNewClient(ip,usr='root'):
     
     db.close()
 
+# Update MySQL database
+def pullDatabaseData():
+
+    print('Connecting to Database...')
+    db = MySQLdb.connect(host=hostname,     # your host, usually localhost
+                         user=username,     # username
+                         passwd=password,   # password
+                         db=database)       # name of the database
+
+    print('Connected to Database')
+    # must create a cursor object
+    cur = db.cursor()
+    data = None
+    try:
+        print('SELECTING data for Android')
+        # Get number of rows 
+        query_stmt = "SELECT * FROM " + table_data
+        cur.execute(query_stmt)
+    
+        # print all the first cell of all the rows
+        data = ""
+        for row in cur.fetchall():
+            length = len(row) - 1 
+            for r in range(0,length):
+                data += r + ","
+            data += row[-1] + "\n"
+    except:
+        db.rollback()
+        print('Rolled back database due to error')
+    
+    db.close()
+
+    return data
+
+
 #Create custom HTTPRequestHandler class
 class KodeFunHTTPRequestHandler(BaseHTTPRequestHandler):
   
    #handle GET command
     def do_GET(self):
-        webpath = '/home/ec2-user/cs183/NMP/server/website/dataDump.php' #file location
         try:
-            #if self.path.endswith('.txt'):
-            f = open(webpath) #open requested file
+            data_to_send = pullDatabaseData()
+            if  not data_to_send == None:
+                #send code 200 response
+                self.send_response(200)
 
-            #send code 200 response
-            self.send_response(200)
+                #send header first
+                self.send_header('Content-type','text-html')
+                self.end_headers()
 
-            #send header first
-            self.send_header('Content-type','text-html')
-            self.end_headers()
-
-            #send file content to client
-            self.wfile.write(f.read())
-            f.close()
-            return
+                #send data content to android
+                self.wfile.write(data_to_send)
+                return
+            else:
+                self.send_error(404, 'Database could not be reached')
       
         except IOError:
-            self.send_error(404, 'file not found')
+            self.send_error(404, 'Server could not handle request')
 
     #handle POST command
     def do_POST(self):
