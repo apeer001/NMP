@@ -1,4 +1,4 @@
-package com.example.daniel.nmpalertviewer;
+package com.example.cs183.nmpalertviewer;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -8,6 +8,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -30,9 +31,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View arg0) {
-                Client myClient = new Client(editTextAddress.getText()
-                        .toString(), Integer.parseInt(editTextPort
-                        .getText().toString()), response);
+                HttpClientTask myClient = new HttpClientTask(response,getApplicationContext());
                 myClient.execute();
             }
         });
