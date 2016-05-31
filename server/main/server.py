@@ -104,23 +104,34 @@ def pullDatabaseData():
     data = None
     try:
         print('SELECTING data for Android')
-        # Get number of rows 
-        query_stmt = "SELECT * FROM " + table_data
+        # Get rows for most recent
+        query_stmt = "SELECT * FROM " + table_recent
         cur.execute(query_stmt)
     
         # print all the first cell of all the rows
         data = ""
         for row in cur.fetchall():
-            length = len(row) - 1 
-            for r in range(0,length):
-                data += r + ","
-            data += row[-1] + "\n"
+            length = len(row) - 1
+            for i in range(0,length):
+                data += str(row[i]) + ","
+            data += str(row[-1]) + "\n"
+
+        data += "--------------------------------------\n"
+
+        # Get rows for all data 
+        query_stmt = "SELECT * FROM " + table_data
+        cur.execute(query_stmt)
+    
+        for row in cur.fetchall():
+            length = len(row) - 1
+            for i in range(0,length):
+                data += str(row[i]) + ","
+            data += str(row[-1]) + "\n"
+
     except:
-        db.rollback()
-        print('Rolled back database due to error')
+        print('database could not be reached due to error')
     
     db.close()
-
     return data
 
 
