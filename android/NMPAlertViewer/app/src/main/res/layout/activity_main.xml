@@ -12,20 +12,8 @@
         android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp"
         android:autoLink="web"
-        android:text="WELCOME"
+        android:text="NMP Alerts"
         android:textStyle="bold" />
-
-    <EditText
-        android:id="@+id/addressEditText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Server ip address" />
-
-    <EditText
-        android:id="@+id/portEditText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Server port number" />
 
     <Button
         android:id="@+id/connectButton"
@@ -44,5 +32,10 @@
         android:id="@+id/responseTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+
+    <ExpandableListView
+        android:id="@+id/lvExp"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"/>
 
 </LinearLayout>
