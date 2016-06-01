@@ -1,45 +1,44 @@
-package com.example.cs183.nmpalertviewer;
+package com.example.cs183.nmpalertviewer.tasks;
 
 /**
- * Created by Daniel on 5/13/2016.
+ * Created by Aaron on 5/31/2016.
  */
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
-import java.net.Socket;
 import java.net.URL;
-import java.net.UnknownHostException;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.TextView;
-
-//PORT: 12359 SERVER IP: 198.199.105.122
 
 public class HttpClientTask extends AsyncTask<Void, Void, Void> {
 
-
+    Context context;
     private final static String TAG = "HttpClientTask.class";
+    private String filename = "clientLogs.csv";;
     public final static String NOT_CONNECTED = "Not connected to the internet";
+
 
     private String dstAddress;
     private String dstPort;
     String response = "";
-    TextView textResponse;
-    Context context;
 
-    HttpClientTask(TextView textResponse, Context cxt) {
+
+    public HttpClientTask(Context cxt) {
         dstAddress = "http://52.32.201.77";
         dstPort = "8080";
-        this.textResponse = textResponse;
         context = cxt;
     }
 
@@ -122,6 +121,30 @@ public class HttpClientTask extends AsyncTask<Void, Void, Void> {
     @Override
     protected void onPostExecute(Void result) {
         super.onPostExecute(result);
-        textResponse.setText(response);
+
+        // Write to file
+        File clientLogs = new File(context.getFilesDir(),filename);
+        if (!clientLogs.exists()) {
+            try {
+                clientLogs.createNewFile();
+            } catch (IOException i) {
+                Log.d(TAG, i.getMessage());
+            }
+        }
+
+        try {
+            // Empty file
+            PrintWriter pw = new PrintWriter(clientLogs);
+            pw.close();
+
+            Log.d(TAG, response);
+            // write log data to file
+            pw = new PrintWriter(clientLogs);
+            pw.write(response);
+            pw.close();
+
+        } catch (FileNotFoundException f) {
+            Log.d(TAG, f.getMessage());
+        }
     }
 }

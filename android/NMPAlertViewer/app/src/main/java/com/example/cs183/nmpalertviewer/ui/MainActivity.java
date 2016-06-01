@@ -1,8 +1,8 @@
-package com.example.cs183.nmpalertviewer;
+package com.example.cs183.nmpalertviewer.ui;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.app.Activity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -11,7 +11,10 @@ import android.widget.ExpandableListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.cs183.nmpalertviewer.Adapters.ExpandableListAdapter;
+import com.example.cs183.nmpalertviewer.adapters.ExpandableListAdapter;
+import com.example.cs183.nmpalertviewer.services.ServerPullService;
+import com.example.cs183.nmpalertviewer.tasks.HttpClientTask;
+import com.example.cs183.nmpalertviewer.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,6 +37,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Immediately pull data from the server to display
+        Intent i = new Intent(getApplicationContext(), ServerPullService.class);
+        startService(i);
+
+        // initialize views
         buttonConnect = (Button) findViewById(R.id.connectButton);
         buttonClear = (Button) findViewById(R.id.clearButton);
         response = (TextView) findViewById(R.id.responseTextView);
@@ -42,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View arg0) {
-                HttpClientTask myClient = new HttpClientTask(response,getApplicationContext());
+                HttpClientTask myClient = new HttpClientTask(getApplicationContext());
                 myClient.execute();
             }
         });
@@ -57,18 +65,13 @@ public class MainActivity extends AppCompatActivity {
 
         // get the listview
         expListView = (ExpandableListView) findViewById(R.id.lvExp);
-
         // preparing list data
         prepareListData();
-
         listAdapter = new ExpandableListAdapter(this, listDataHeader, listDataChild);
-
         // setting list adapter
         expListView.setAdapter(listAdapter);
-
         // Listview on child click listener
         expListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
-
             @Override
             public boolean onChildClick(ExpandableListView parent, View v,
                                         int groupPosition, int childPosition, long id) {
@@ -86,7 +89,6 @@ public class MainActivity extends AppCompatActivity {
 
         // Listview Group expanded listener
         expListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
-
             @Override
             public void onGroupExpand(int groupPosition) {
                 Toast.makeText(getApplicationContext(),
@@ -97,7 +99,6 @@ public class MainActivity extends AppCompatActivity {
 
         // Listview Group collasped listener
         expListView.setOnGroupCollapseListener(new ExpandableListView.OnGroupCollapseListener() {
-
             @Override
             public void onGroupCollapse(int groupPosition) {
                 Toast.makeText(getApplicationContext(),

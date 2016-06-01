@@ -1,4 +1,4 @@
-package com.example.cs183.nmpalertviewer.Adapters;
+package com.example.cs183.nmpalertviewer.adapters;
 
 /**
  * Created by Aaron Peery on 5/31/2016.
