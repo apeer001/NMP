@@ -35,9 +35,7 @@
             android:exported="true" />
 
         <receiver
-            android:name=".alarms.StartupBroadcaster"
-            android:enabled="false"
-            android:exported="true">
+            android:name=".alarms.StartupBroadcaster">
 
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />

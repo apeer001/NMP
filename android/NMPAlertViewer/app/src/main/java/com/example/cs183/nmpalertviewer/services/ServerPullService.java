@@ -38,6 +38,8 @@ public class ServerPullService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        Intent i = new Intent(getApplicationContext(), ServerPullService.class);
+        startService(i);
     }
 
     @Override

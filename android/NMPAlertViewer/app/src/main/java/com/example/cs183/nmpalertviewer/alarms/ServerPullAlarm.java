@@ -6,6 +6,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.content.WakefulBroadcastReceiver;
+import android.util.Log;
 
 import com.example.cs183.nmpalertviewer.services.ServerPullService;
 
@@ -20,7 +21,7 @@ public class ServerPullAlarm extends WakefulBroadcastReceiver {
 
     /* Returns an alarm manager that will fire at an interval */
     public AlarmManager setIntervalAlarmManager(Context context) {
-        //Log.d("HttpsClientAlarm", "Set alarm");
+        Log.d("ServerPullAlarm", "Set alarm");
 
         Intent intent = new Intent(context, ServerPullAlarm.class);
         alarmIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -29,7 +30,7 @@ public class ServerPullAlarm extends WakefulBroadcastReceiver {
         AlarmManager alarm = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         alarm.setRepeating(AlarmManager.RTC_WAKEUP,
                 60 * 1000,
-                120 * 1000,
+                60 * 1000,
                 alarmIntent
         );
         return alarm;

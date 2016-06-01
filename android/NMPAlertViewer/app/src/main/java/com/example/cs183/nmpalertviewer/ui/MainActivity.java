@@ -39,10 +39,12 @@ public class MainActivity extends AppCompatActivity {
             Log.d(getApplication().getClass().getSimpleName(), "onCreate: could not set color");
         }
 
+        // Send broadcast to start alarm
+        Intent broadcast = new Intent(StartupBroadcaster.startupStr);
+        sendBroadcast(broadcast);
+
         // Immediately pull data from the server to display
         Intent i = new Intent(getApplicationContext(), ServerPullService.class);
-        i.setAction(StartupBroadcaster.startupStr);
-        sendBroadcast(i);
         startService(i);
 
         FragmentManager fm;

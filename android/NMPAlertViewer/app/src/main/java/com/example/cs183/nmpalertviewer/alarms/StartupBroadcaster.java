@@ -3,6 +3,7 @@ package com.example.cs183.nmpalertviewer.alarms;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 public class StartupBroadcaster extends BroadcastReceiver {
     ServerPullAlarm serverPullAlarm = null;
@@ -12,7 +13,7 @@ public class StartupBroadcaster extends BroadcastReceiver {
 
     @Override
     public void onReceive(final Context context, Intent intent) {
-        //Log.d(this.getClass().getName(), "Broadcast Received " + intent.toString());
+        Log.d(this.getClass().getName(), "Broadcast Received " + intent.toString());
         if (intent.getAction().equals(startupStr)
          || intent.getAction().equals("android.intent.action.BOOT_COMPLETED")) {
 
