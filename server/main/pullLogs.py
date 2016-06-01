@@ -1,6 +1,7 @@
 #!/usr/bin/python
 # Author: Aaron Peery
 
+from datetime import datetime
 from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
 import httplib
 import sys
@@ -37,6 +38,7 @@ def getLogFromClient(ip):
     print(rsp.status, rsp.reason)
     data_received = rsp.read()
     print(data_received)
+    
     conn.close()
 
     return data_received
@@ -101,6 +103,11 @@ def getLogs():
                 except:
                     db.rollback()
                     print('Rolling back database due to error')
+            else:
+                d = datetime.datetime.now()
+                d.strftime("YY-MM-DD HH:mm:ss") 
+                logPart = ['','OFFLINE',-1,-1,-1,'This client is unable to be reached. Needs Attention!']
+                updateLogDB(cur,comp_ip,comp_id,logPart,admin_user)
         except:
             print('Unable to connect to ' + comp_ip)
     
