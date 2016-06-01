@@ -1,8 +1,9 @@
 #! /usr/bin/python
 
+
 import datetime, sys, os, time, random, subprocess
 
-logfile = 'client_log.txt'                                                     ##Name of the file to be created to store information about the client
+logfile = '/home/ec2-user/cs183/NMP/client/client_log.txt'                                                     ##Name of the file to be created to store information about the client
    
 date = datetime.date.today()                                                    ##Grabs the date in YYYY-MM-DD format
 clienttime = time.strftime("%I:%M:%S")                                          ##Grabs the time on the computer in HH:MM:SS
@@ -12,7 +13,7 @@ status = 'GOOD'
 command = "mpstat | awk \'{print $12}\'"                                        ##Runs mpstat command to get CPU load and grabs from the Idle column
 cpu_load = subprocess.check_output(command, shell=True)
 cpu_load = cpu_load[8:len(cpu_load)-1]                                          ##Formats the string
-cpu_load = int(100.00 - float(cpu_load))                                             ##Since we got the percentage of idle CPU, we subtract that from 100 to get the amount in use
+cpu_load = int(100.00 - float(cpu_load))                                        ##Since we got the percentage of idle CPU, we subtract that from 100 to get the amount in use
 
 if cpu_load > 80:
     comp_temp = random.randint(75, 112)                                         ##Computer Temperature - Can't get the temperature of a virtual machine so we use a random number generator to try and simulate it
