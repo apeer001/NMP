@@ -41,7 +41,7 @@ public class MainFragment extends Fragment {
     List<String> listDataHeader;
     HashMap<String, List<String>> listDataChild;
     Context context;
-    private BottomBar mBottomBar;
+    private BottomBar mBottomBar = null;
 
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
@@ -99,28 +99,38 @@ public class MainFragment extends Fragment {
             }
         });
 
-        mBottomBar = BottomBar.attach(getActivity(), savedInstanceState);
-        mBottomBar.setItemsFromMenu(R.menu.bottombar_menu, new OnMenuTabClickListener() {
-            @Override
-            public void onMenuTabSelected(@IdRes int menuItemId) {
-                if (menuItemId == R.id.bottomBarItemOne) {
-                    // The user selected item number one.
-                    Intent i = new Intent(context, ServerPullService.class);
-                    context.startService(i);
-                    prepareListData();
+        if (mBottomBar == null) {
+            mBottomBar = BottomBar.attach(getActivity(), savedInstanceState);
+            mBottomBar.setItemsFromMenu(R.menu.bottombar_menu, new OnMenuTabClickListener() {
+                @Override
+                public void onMenuTabSelected(@IdRes int menuItemId) {
+                    if (menuItemId == R.id.bottomBarItemOne) {
+                        // The user selected item number one.
+                        Log.d(getClass().getSimpleName(), "onMenuTabSelected: menu tab selected");
+                        Intent i = new Intent(context, ServerPullService.class);
+                        context.startService(i);
+                        prepareListData();
+                        listAdapter = new ExpandableListAdapter(context, listDataHeader, listDataChild);
+                        // setting list adapter
+                        expListView.setAdapter(listAdapter);
+                    }
                 }
-            }
 
-            @Override
-            public void onMenuTabReSelected(@IdRes int menuItemId) {
-                if (menuItemId == R.id.bottomBarItemOne) {
-                    // The user reselected item number one, scroll your content to top.
-                    //Intent i = new Intent(context, ServerPullService.class);
-                    //context.startService(i);
-                    //prepareListData();
+                @Override
+                public void onMenuTabReSelected(@IdRes int menuItemId) {
+                    if (menuItemId == R.id.bottomBarItemOne) {
+                        // The user reselected item number one, scroll your content to top.
+                        Log.d(getClass().getSimpleName(), "onMenuTabReSelected: menu tab selected");
+                        Intent i = new Intent(context, ServerPullService.class);
+                        context.startService(i);
+                        prepareListData();
+                        listAdapter = new ExpandableListAdapter(context, listDataHeader, listDataChild);
+                        // setting list adapter
+                        expListView.setAdapter(listAdapter);
+                    }
                 }
-            }
-        });
+            });
+        }
 
 
 

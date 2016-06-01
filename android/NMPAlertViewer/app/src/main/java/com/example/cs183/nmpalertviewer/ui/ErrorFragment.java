@@ -116,18 +116,22 @@ public class ErrorFragment extends Fragment {
                 String line;
                 while ((line = br.readLine()) != null) {
                     if (!line.contains("----------------------")) {
-                        StringArrayList parts = new StringArrayList();
-                        parts.set(line.split(","));
-                        Recentlines.add(parts);
+                        if (line.length() > 0) {
+                            StringArrayList parts = new StringArrayList();
+                            parts.set(line.split(","));
+                            Recentlines.add(parts);
+                        }
                     } else {
                         break;
                     }
                 }
 
                 while ((line = br.readLine()) != null) {
-                    StringArrayList parts = new StringArrayList();
-                    parts.set(line.split(","));
-                    Alllines.add(parts);
+                    if (line.length() > 0) {
+                        StringArrayList parts = new StringArrayList();
+                        parts.set(line.split(","));
+                        Alllines.add(parts);
+                    }
                 }
                 br.close();
             } catch (FileNotFoundException f) {
@@ -138,7 +142,7 @@ public class ErrorFragment extends Fragment {
 
 
             // Sort all lines by id
-            Collections.sort(Alllines);
+            Collections.sort(Recentlines);
 
             List <List<String>> expandedData = new ArrayList<>();
             String currentid = "-1";

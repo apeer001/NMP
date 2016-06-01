@@ -5,21 +5,55 @@ import android.graphics.pdf.PdfDocument;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.example.cs183.nmpalertviewer.ui.ErrorFragment;
 import com.example.cs183.nmpalertviewer.ui.MainFragment;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Aaron on 5/31/2016.
  */
 public class PageAdapter extends FragmentPagerAdapter{
 
+    private Map<Integer, String> mFragmentTags;
+    FragmentManager mFragmentManager;
     Fragment fragment;
-    public PageAdapter (FragmentManager fm , Context context) {
+    Context context;
+
+
+    public PageAdapter (FragmentManager fm , Context cxt) {
         super(fm);
+        mFragmentManager = fm;
         fragment = null;
+        mFragmentTags = new HashMap<Integer, String>();
+        context = cxt;
+    }
+
+    @Override
+    public Object instantiateItem(ViewGroup container, int position) {
+        Object obj = super.instantiateItem(container, position);
+        if (obj instanceof Fragment) {
+            // record the fragment tag here.
+            Fragment f = (Fragment) obj;
+            String tag = f.getTag();
+            mFragmentTags.put(position, tag);
+        }
+        return obj;
+    }
+
+    public Fragment getFragment(int position) {
+        String tag = mFragmentTags.get(position);
+        if (tag == null)
+            return null;
+        return mFragmentManager.findFragmentByTag(tag);
     }
 
 
@@ -28,26 +62,10 @@ public class PageAdapter extends FragmentPagerAdapter{
 
         switch (position) {
             case 0:
-                if (fragment != null) {
-                    View view = fragment.getView();
-                    try {
-                        view.setVisibility(View.GONE);
-                    } catch (NullPointerException n) {
-                        Log.d(getClass().getSimpleName(), "getItem: " + n.getMessage());
-                    }
-                }
-                fragment = new MainFragment();
+                fragment = Fragment.instantiate(context, MainFragment.class.getName(), null);
                 break;
             case 1:
-                if (fragment != null) {
-                    View view = fragment.getView();
-                    try {
-                        view.setVisibility(View.GONE);
-                    } catch (NullPointerException n) {
-                        Log.d(getClass().getSimpleName(), "getItem: " + n.getMessage());
-                    }
-                }
-                fragment = new ErrorFragment();
+                fragment = Fragment.instantiate(context, ErrorFragment.class.getName(), null);
                 break;
             default:
                 fragment = null;

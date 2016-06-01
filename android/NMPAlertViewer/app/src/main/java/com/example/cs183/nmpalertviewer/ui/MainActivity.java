@@ -5,7 +5,9 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,6 +18,7 @@ import com.example.cs183.nmpalertviewer.adapters.PageAdapter;
 import com.example.cs183.nmpalertviewer.alarms.StartupBroadcaster;
 import com.example.cs183.nmpalertviewer.services.ServerPullService;
 import com.example.cs183.nmpalertviewer.R;
+import com.example.cs183.nmpalertviewer.tasks.HttpClientTask;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -51,6 +54,32 @@ public class MainActivity extends AppCompatActivity {
         } catch (NullPointerException n) {
             Log.d(getApplication().getClass().getSimpleName(), "onCreate: could not set pager");
         }
+
+        Bundle NotifBundle = getIntent().getExtras();
+        if (NotifBundle != null) {
+            int pageid = NotifBundle.getInt(HttpClientTask.PAGEID)+1;
+            viewPager.setCurrentItem(pageid);
+        }
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                Fragment frg = pageAdapter.getFragment(position);
+                final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                ft.detach(frg);
+                ft.attach(frg);
+                ft.commit();
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
 
