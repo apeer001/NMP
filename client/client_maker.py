@@ -9,7 +9,7 @@ clienttime = time.strftime("%I:%M:%S")                                          
 
 status = 'GOOD'
 
-command = "mpstat | awk \'{print $11}\'"                                        ##Runs mpstat command to get CPU load and grabs from the Idle column
+command = "mpstat | awk \'{print $12}\'"                                        ##Runs mpstat command to get CPU load and grabs from the Idle column
 cpu_load = subprocess.check_output(command, shell=True)
 cpu_load = cpu_load[8:len(cpu_load)-1]                                          ##Formats the string
 cpu_load = 100.00 - float(cpu_load)                                             ##Since we got the percentage of idle CPU, we subtract that from 100 to get the amount in use
