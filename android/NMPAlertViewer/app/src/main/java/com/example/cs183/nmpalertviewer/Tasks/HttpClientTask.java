@@ -27,7 +27,7 @@ public class HttpClientTask extends AsyncTask<Void, Void, Void> {
 
     Context context;
     private final static String TAG = "HttpClientTask.class";
-    private String filename = "clientLogs.csv";;
+    public final static String filename = "clientLogs.csv";;
     public final static String NOT_CONNECTED = "Not connected to the internet";
 
 
