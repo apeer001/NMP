@@ -18,9 +18,9 @@ cpu_load = int(100.00 - float(cpu_load))                                        
 if cpu_load > 80:
     comp_temp = random.randint(75, 112)                                         ##Computer Temperature - Can't get the temperature of a virtual machine so we use a random number generator to try and simulate it
 elif cpu_load <= 80 and cpu_load >40:                                           ##Semi-bases the number on computer load
-    comp_temp = random.randint(35, 85)
+    comp_temp = random.randint(40, 85)
 else:
-    comp_temp = random.randint(15, 60)
+    comp_temp = random.randint(15, 39)
 
 net_load = 0                                                                    ##Not implemented yet
 

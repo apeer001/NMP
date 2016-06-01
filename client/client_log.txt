@@ -1,4 +1,2 @@
-2016-05-29 03:31:22,OK,15,44,31,Initial Client log that can go on foreverrrrr.....
-2016-05-29 03:31:22,OK,16,54,22,Initial Client log that can go on foreverrrrr.....
-2016-06-01 05:45:29,WARNING,0.06,54,0, INTERNAL TEMPERATURE approaching maximum threshold.
-2016-06-01 05:46:37,GOOD,0,30,0,CPU LOAD and INTERNAL TEMPERATURE well below maximum thresholds.
+2016-06-01 06:50:01,GOOD,0,32,0,CPU LOAD and INTERNAL TEMPERATURE well below maximum thresholds.
+2016-06-01 06:51:01,GOOD,0,37,0,CPU LOAD and INTERNAL TEMPERATURE well below maximum thresholds.
