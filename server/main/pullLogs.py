@@ -39,6 +39,9 @@ def getLogFromClient(ip):
     data_received = rsp.read()
     print(data_received)
     
+    if not rsp.status == 200:
+        data_received = None
+
     conn.close()
 
     return data_received
@@ -90,7 +93,7 @@ def getLogs():
         # Get log data
         try:
             data_received = getLogFromClient(comp_ip)
-            if data_received.find('HTTP/1.0 404 file not found') == -1:
+            if not data_received == None:
                 # Input new log data into log table in db
                 try:
                     if len(data_received) > 0:
