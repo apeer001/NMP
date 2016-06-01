@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.cs183.nmpalertviewer.adapters.ExpandableListAdapter;
+import com.example.cs183.nmpalertviewer.alarms.StartupBroadcaster;
 import com.example.cs183.nmpalertviewer.services.ServerPullService;
 import com.example.cs183.nmpalertviewer.tasks.HttpClientTask;
 import com.example.cs183.nmpalertviewer.R;
@@ -39,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
 
         // Immediately pull data from the server to display
         Intent i = new Intent(getApplicationContext(), ServerPullService.class);
+        i.setAction(StartupBroadcaster.startupStr);
+        sendBroadcast(i);
         startService(i);
 
         // initialize views
