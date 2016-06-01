@@ -3,7 +3,7 @@
 
 import datetime, sys, os, time, random, subprocess
 
-logfile = '/home/ec2-user/cs183/NMP/client/client_log.txt'                                                     ##Name of the file to be created to store information about the client
+logfile = '/home/ec2-user/cs183/NMP/client/client_log.txt'                      ##Name of the file to be created to store information about the client
    
 date = datetime.date.today()                                                    ##Grabs the date in YYYY-MM-DD format
 clienttime = time.strftime("%I:%M:%S")                                          ##Grabs the time on the computer in HH:MM:SS
