@@ -16,7 +16,7 @@ cpu_load = 100.00 - float(cpu_load)                                             
 
 if cpu_load > 80:
     comp_temp = random.randint(75, 112)                                         ##Computer Temperature - Can't get the temperature of a virtual machine so we use a random number generator to try and simulate it
-elif cpu_load <= 80 and cpu_load >40:                                                                           ##Semi-bases the number on computer load
+elif cpu_load <= 80 and cpu_load >40:                                           ##Semi-bases the number on computer load
     comp_temp = random.randint(35, 85)
 else:
     comp_temp = random.randint(15, 60)
@@ -52,7 +52,7 @@ elif (cpu_load <= 80 or comp_temp <= 80) and (cpu_load > 20 or comp_temp > 40): 
     client_log = cpumessage + " " + tempmessage
         
 elif cpu_load <= 20 and comp_temp <= 40:                                        ##If both CPU LOAD and TEMPERATURE are below 40% and 20C respectively, then we are in a GOOD state
-    status = "GOOD"                                                               ##The status of the machine is set to GOOD and a message is put into the client_log
+    status = "GOOD"                                                             ##The status of the machine is set to GOOD and a message is put into the client_log
     client_log = "CPU LOAD and INTERNAL TEMPERATURE well below maximum thresholds."
 
 
