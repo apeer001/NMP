@@ -124,39 +124,38 @@ def getLogs():
 # Checks the 'network_data' table and finds all logs from the last 10 minutes
 # and places them in the 'most_recent_network_status' table
 def updateMostRecentErrorsDB():
+	print('updating ' +  table_recent + ' requests is starting...')
 
- 	print('updating ' +  table_recent + ' requests is starting...')
-    
-    db = MySQLdb.connect(host=hostname,     # your host, usually localhost
-                         user=username,     # username
-                         passwd=password,   # password
-                         db=database)       # name of the database
+	db = MySQLdb.connect(host=hostname,     # your host, usually localhost
+	                     user=username,     # username
+	                     passwd=password,   # password
+	                     db=database)       # name of the database
 
-    # must create a cursor object
-    cur = db.cursor()
-    
-    # Query for all ip addresses in network table
-    upperBound = datetime.datetime.now()
-    lowerBound = upperBound - datetime.timedelta(minutes=10)
-    upperBound.strftime("YY-MM-DD HH:mm:ss") 
-    lowerBound.strftime("YY-MM-DD HH:mm:ss") 
-    print(lowerBound)
-    print(upperBound)
-    query_stmt = "SELECT * FROM " + table_data + " WHERE time_of_update BETWEEN '" + lowerBound +"' '" + upperBound + "'"
-    cur.execute(query_stmt)  
-    for (admin_user, comp_id, comp_ip, timestamp, comp_status, cpu_load, comp_temp, net_load, description) in cur.fetchall():
-        print(admin_user + " " + str(comp_id) + " " + str(comp_ip))
-        # update log row
-        try:
+	# must create a cursor object
+	cur = db.cursor()
+
+	# Query for all ip addresses in network table
+	upperBound = datetime.datetime.now()
+	lowerBound = upperBound - datetime.timedelta(minutes=10)
+	upperBound.strftime("YY-MM-DD HH:mm:ss") 
+	lowerBound.strftime("YY-MM-DD HH:mm:ss") 
+	print(lowerBound)
+	print(upperBound)
+	query_stmt = "SELECT * FROM " + table_data + " WHERE time_of_update BETWEEN '" + lowerBound +"' '" + upperBound + "'"
+	cur.execute(query_stmt)  
+	for (admin_user, comp_id, comp_ip, timestamp, comp_status, cpu_load, comp_temp, net_load, description) in cur.fetchall():
+	    print(admin_user + " " + str(comp_id) + " " + str(comp_ip))
+	    # update log row
+	    try:
 			for line in lines:
 			logPart = [timestamp, comp_status, cpu_load, comp_temp, net_load, description]
 			updateLogDB(cur,comp_ip,comp_id,logPart,admin_user,table_recent)
 			db.commit()         
-        except:
-            db.rollback()
-            print('Rolling back database due to error')
-            
-    db.close()
+	    except:
+	        db.rollback()
+	        print('Rolling back database due to error')
+	        
+	db.close()
  
 # Main
 if __name__ == '__main__':
