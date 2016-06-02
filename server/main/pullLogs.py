@@ -58,7 +58,7 @@ def updateLogDB(cur,ip,comp_id,logpart,user='root',table=table_data):
         description = logpart[5]
     else:
     	d = datatime.datetime.now()
-    	d.strftime("%Y-%m-%d %H:%M:%S")
+    	d = d.strftime("%Y-%m-%d %H:%M:%S")
         timestamp = d
         comp_status = 'CRITICAL'
         cpu_load = -1
@@ -111,7 +111,7 @@ def getLogs():
                     print('Rolling back database due to error')
             else:
                 d = datetime.now()
-                d.strftime("%Y-%m-%d %H:%M:%S") 
+                d = d.strftime("%Y-%m-%d %H:%M:%S") 
                 logPart = [d,'OFFLINE',-1,-1,-1,'This client is unable to be reached. Needs Attention!']
                 updateLogDB(cur,comp_ip,comp_id,logPart,admin_user)
         except:
@@ -148,9 +148,9 @@ def updateMostRecentErrorsDB():
 	    # update log row
 	    try:
 			logPart = [timestamp, comp_status, cpu_load, comp_temp, net_load, description]
-			print(logpart)
-			#updateLogDB(cur,comp_ip,comp_id,logPart,admin_user,table_recent)
-			#db.commit()         
+			print(logPart)
+			updateLogDB(cur,comp_ip,comp_id,logPart,admin_user,table_recent)
+			db.commit()         
 	    except:
 	        db.rollback()
 	        print('Rolling back database due to error')
