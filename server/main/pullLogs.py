@@ -123,7 +123,7 @@ def getLogs():
 
 # Checks the 'network_data' table and finds all logs from the last 10 minutes
 # and places them in the 'most_recent_network_status' table
- def updateMostRecentErrorsDB():
+def updateMostRecentErrorsDB():
 
  	print('updating ' +  table_recent + ' requests is starting...')
     
