@@ -110,7 +110,7 @@ def getLogs():
                     db.rollback()
                     print('Rolling back database due to error')
             else:
-                d = datetime.datetime.now()
+                d = datetime.now()
                 d.strftime("YY-MM-DD HH:mm:ss") 
                 logPart = [d,'OFFLINE',-1,-1,-1,'This client is unable to be reached. Needs Attention!']
                 updateLogDB(cur,comp_ip,comp_id,logPart,admin_user)
@@ -135,7 +135,7 @@ def updateMostRecentErrorsDB():
 	cur = db.cursor()
 
 	# Query for all ip addresses in network table
-	upperBound = datetime.datetime.now()
+	upperBound = datetime.now()
 	lowerBound = upperBound - datetime.timedelta(minutes=10)
 	upperBound.strftime("YY-MM-DD HH:mm:ss") 
 	lowerBound.strftime("YY-MM-DD HH:mm:ss") 
