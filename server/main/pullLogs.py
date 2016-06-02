@@ -22,6 +22,8 @@ table_net = "network"                           # client general info
 table_data = "network_data"                     # all client log data
 table_recent = "most_recent_network_status"     # most recent (daily) log data for website
 
+ERRORS = ["CRITICAL", "BAD", ""]
+
 # Functions
 def getLogFromClient(ip):
     #get http server ip
@@ -147,8 +149,8 @@ def updateMostRecentErrorsDB():
 	    print(admin_user + " " + str(comp_id) + " " + str(comp_ip))
 	    # update log row
 	    try:
-			logPart = [timestamp, comp_status, cpu_load, comp_temp, net_load, description]
-			print(logPart)
+			#logPart = [timestamp, comp_status, cpu_load, comp_temp, net_load, description]
+			#print(logPart)
 			updateLogDB(cur,comp_ip,comp_id,logPart,admin_user,table_recent)
 			db.commit()         
 	    except:
