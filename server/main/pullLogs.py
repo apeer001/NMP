@@ -136,7 +136,7 @@ def updateMostRecentErrorsDB():
 
 	# Query for all ip addresses in network table
 	upperBound = datetime.now()
-	lowerBound = upperBound - datetime.timedelta(minutes=10)
+	lowerBound = upperBound - timedelta(minutes=10)
 	upperBound.strftime("YY-MM-DD HH:mm:ss") 
 	lowerBound.strftime("YY-MM-DD HH:mm:ss") 
 	print(lowerBound)
