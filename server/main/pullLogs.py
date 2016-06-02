@@ -58,7 +58,7 @@ def updateLogDB(cur,ip,comp_id,logpart,user='root',table=table_data):
         description = logpart[5]
     else:
     	d = datatime.datetime.now()
-    	d.strftime("YY-MM-DD HH:mm:ss")
+    	d.strftime("%Y-%m-%d %H:%M:%S")
         timestamp = d
         comp_status = 'CRITICAL'
         cpu_load = -1
@@ -111,7 +111,7 @@ def getLogs():
                     print('Rolling back database due to error')
             else:
                 d = datetime.now()
-                d = d.strftime("YY-MM-DD HH:mm:ss") 
+                d.strftime("%Y-%m-%d %H:%M:%S") 
                 logPart = [d,'OFFLINE',-1,-1,-1,'This client is unable to be reached. Needs Attention!']
                 updateLogDB(cur,comp_ip,comp_id,logPart,admin_user)
         except:
@@ -137,8 +137,8 @@ def updateMostRecentErrorsDB():
 	# Query for all ip addresses in network table
 	upperBound = datetime.now()
 	lowerBound = upperBound - timedelta(minutes=10)
-	upperBound = upperBound.strftime("YY-MM-DD HH:mm:ss") 
-	lowerBound = lowerBound.strftime("YY-MM-DD HH:mm:ss") 
+	upperBound = upperBound.strftime("%Y-%m-%d %H:%M:%S") 
+	lowerBound = lowerBound.strftime("%Y-%m-%d %H:%M:%S") 
 	print(lowerBound)
 	print(upperBound)
 	query_stmt = "SELECT * FROM " + table_data + " WHERE time_of_update BETWEEN '" + str(lowerBound) +"' and '" + str(upperBound) + "'"
