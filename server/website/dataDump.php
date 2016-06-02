@@ -11,8 +11,17 @@
 <script type="text/javascript" src="js/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="js/initTables.js"></script>
 
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('#webpage').show();
+  });
+</script>
+
 </head>
 <body>
+
+<form id="webpage" style="display:none;">
+
 <div class="menu-wrapper">
   <div class="menu">
     <ul>
@@ -87,5 +96,7 @@
   ?> 
 </div>
 
+
+</form>
 </body>
 </html>
