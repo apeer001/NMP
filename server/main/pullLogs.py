@@ -111,7 +111,7 @@ def getLogs():
                     print('Rolling back database due to error')
             else:
                 d = datetime.now()
-                d.strftime("YY-MM-DD HH:mm:ss") 
+                d = d.strftime("YY-MM-DD HH:mm:ss") 
                 logPart = [d,'OFFLINE',-1,-1,-1,'This client is unable to be reached. Needs Attention!']
                 updateLogDB(cur,comp_ip,comp_id,logPart,admin_user)
         except:
@@ -137,8 +137,8 @@ def updateMostRecentErrorsDB():
 	# Query for all ip addresses in network table
 	upperBound = datetime.now()
 	lowerBound = upperBound - timedelta(minutes=10)
-	upperBound.strftime("YY-MM-DD HH:mm:ss") 
-	lowerBound.strftime("YY-MM-DD HH:mm:ss") 
+	upperBound = upperBound.strftime("YY-MM-DD HH:mm:ss") 
+	lowerBound = lowerBound.strftime("YY-MM-DD HH:mm:ss") 
 	print(lowerBound)
 	print(upperBound)
 	query_stmt = "SELECT * FROM " + table_data + " WHERE time_of_update BETWEEN '" + str(lowerBound) +"' and '" + str(upperBound) + "'"
