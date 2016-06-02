@@ -22,7 +22,16 @@ elif cpu_load <= 80 and cpu_load >40:                                           
 else:
     comp_temp = random.randint(15, 39)
 
-net_load = 0                                                                    ##Not implemented yet
+net_load = 0                                                                    ##RX is outgoing bytes, TX is incoming bytes
+rx_command = "cat /sys/class/net/eth0/statistics/rx_bytes"                      ##Goes to their corresponding files and grabs the bytes sent and recieved
+tx_command = "cat /sys/class/net/eth0/statistics/tx_bytes"
+R1 = int(subprocess.check_output(rx_command, shell=True))
+T1 = int(subprocess.check_output(tx_command, shell=True))
+time.sleep(1)                                                                   ##Waits for 1 second
+R2 = int(subprocess.check_output(rx_command, shell=True))                       ##Does the same thing, then subtracts R2 - R1, and T2 - T1 and adds them both
+T2 = int(subprocess.check_output(tx_command, shell=True))                       ##To get total number of bytes going through the network on eth0
+
+net_load = (R2 - R1) + (T2 - T1)
 
 cpumessage = ""
 tempmessage = ""
