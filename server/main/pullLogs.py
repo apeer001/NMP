@@ -147,11 +147,10 @@ def updateMostRecentErrorsDB():
 	    print(admin_user + " " + str(comp_id) + " " + str(comp_ip))
 	    # update log row
 	    try:
-			for line in lines:
-				logPart = [timestamp, comp_status, cpu_load, comp_temp, net_load, description]
-				print(logpart)
-				#updateLogDB(cur,comp_ip,comp_id,logPart,admin_user,table_recent)
-				#db.commit()         
+			logPart = [timestamp, comp_status, cpu_load, comp_temp, net_load, description]
+			print(logpart)
+			#updateLogDB(cur,comp_ip,comp_id,logPart,admin_user,table_recent)
+			#db.commit()         
 	    except:
 	        db.rollback()
 	        print('Rolling back database due to error')
