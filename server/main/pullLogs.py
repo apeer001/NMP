@@ -141,8 +141,6 @@ def updateMostRecentErrorsDB():
 	lowerBound = upperBound - timedelta(minutes=10)
 	upperBound = upperBound.strftime("%Y-%m-%d %H:%M:%S") 
 	lowerBound = lowerBound.strftime("%Y-%m-%d %H:%M:%S") 
-	print(lowerBound)
-	print(upperBound)
 	query_stmt = "SELECT * FROM " + table_data + " WHERE time_of_update BETWEEN '" + str(lowerBound) +"' and '" + str(upperBound) + "'"
 	cur.execute(query_stmt)  
 	for (admin_user, comp_id, comp_ip, timestamp, comp_status, cpu_load, comp_temp, net_load, description) in cur.fetchall():
