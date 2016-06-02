@@ -141,7 +141,7 @@ def updateMostRecentErrorsDB():
 	lowerBound.strftime("YY-MM-DD HH:mm:ss") 
 	print(lowerBound)
 	print(upperBound)
-	query_stmt = "SELECT * FROM " + table_data + " WHERE time_of_update BETWEEN '" + lowerBound +"' '" + upperBound + "'"
+	query_stmt = "SELECT * FROM " + table_data + " WHERE time_of_update BETWEEN '" + str(lowerBound) +"' '" + str(upperBound) + "'"
 	cur.execute(query_stmt)  
 	for (admin_user, comp_id, comp_ip, timestamp, comp_status, cpu_load, comp_temp, net_load, description) in cur.fetchall():
 	    print(admin_user + " " + str(comp_id) + " " + str(comp_ip))
