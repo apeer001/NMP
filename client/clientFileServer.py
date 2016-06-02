@@ -100,6 +100,7 @@ def runClientFileServer():
   server_address = (ip, 8080)
   httpd = HTTPServer(server_address, KodeFunHTTPRequestHandler)
   print('http server is running...')
+  # idea: we may want to encrypt the log files for security
   httpd.serve_forever()
   
 if __name__ == '__main__':
