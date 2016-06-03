@@ -22,7 +22,7 @@ table_net = "network"                           # client general info
 table_data = "network_data"                     # all client log data
 table_recent = "most_recent_network_status"     # most recent (daily) log data for website
 
-ERRORS = ["CRITICAL", "BAD", ""]
+ERRARRAY = ["CRITICAL", "WARNING"]
 
 # Functions
 def getLogFromClient(ip):
@@ -122,6 +122,13 @@ def getLogs():
     db.close()
     return 0
 
+# Check if the status is in the Error
+def isAnErrorStatus(status):
+    for s in ERRARRAY:
+        if status == s:
+            return  true
+    return false
+
 
 # Checks the 'network_data' table and finds all logs from the last 10 minutes
 # and places them in the 'most_recent_network_status' table
@@ -144,16 +151,17 @@ def updateMostRecentErrorsDB():
 	query_stmt = "SELECT * FROM " + table_data + " WHERE time_of_update BETWEEN '" + str(lowerBound) +"' and '" + str(upperBound) + "'"
 	cur.execute(query_stmt)  
 	for (admin_user, comp_id, comp_ip, timestamp, comp_status, cpu_load, comp_temp, net_load, description) in cur.fetchall():
-	    print(admin_user + " " + str(comp_id) + " " + str(comp_ip))
-	    # update log row
-	    try:
-			#logPart = [timestamp, comp_status, cpu_load, comp_temp, net_load, description]
-			#print(logPart)
-			updateLogDB(cur,comp_ip,comp_id,logPart,admin_user,table_recent)
-			db.commit()         
-	    except:
-	        db.rollback()
-	        print('Rolling back database due to error')
+	    if isAnErrorStatus(comp_status):
+                print(admin_user + " " + str(comp_id) + " " + str(comp_ip))
+	        # update log row
+                try:
+		    #logPart = [timestamp, comp_status, cpu_load, comp_temp, net_load, description]
+		    #print(logPart)
+		    updateLogDB(cur,comp_ip,comp_id,logPart,admin_user,table_recent)
+		    db.commit()         
+	        except:
+	            db.rollback()
+	            print('Rolling back database due to error')
 	        
 	db.close()
  
