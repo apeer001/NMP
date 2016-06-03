@@ -1,0 +1,60 @@
+OS
+NAME="Amazon Linux AMI"
+VERSION="2016.03"
+ID="amzn"
+ID_LIKE="rhel fedora"
+VERSION_ID="2016.03"
+PRETTY_NAME="Amazon Linux AMI 2016.03"
+ANSI_COLOR="0;33"
+CPE_NAME="cpe:/o:amazon:linux:2016.03:ga"
+HOME_URL=http://aws.amazon.com/amazon-linux-ami/
+
+PACKAGES REQUIRED
+sudo yum install A
+sudo yum install mysql
+sudo yum install php
+sudo yum install httpd24, 
+sudo yum install MySQL-server, 
+sudo yum install php56 
+sudo yum install vim
+sudo yum install sysstat
+
+CONFIG FILES
+ /etc/httpd/conf/httpd.conf
+	We needed to set the correct start page
+	We turned off symlinks
+	We turned off the ability to go explore in any directory other than the current
+
+
+BACKGROUND PROCESSES
+
+
+SERVER CRON JOBS
+crontab -e
+* * * * * ~/cs183/NMP/server/main/pullLogs.py
+* * * * * ~/cs183/NMP/databse/alert.py
+
+CLIENT CRON JOBS
+crontab -e
+* * * * * ~/cs183/NMP/client/client_maker.py
+
+Order of Commands for Operation
+git clone https://github.com/apeer001/NMP.git
+
+Important Changes Necessary
+Change IPs of our system to the IPs of the network on system
+
+WORKING CORRECTLY
+Method 1:
+The easiest way to check is to type the following commands into the terminal (without ‘):
+‘sudo mysql’
+‘use cs184’
+‘SELECT * FROM network_data;’
+Every minute there should be data pushed, and there will be increasing numbers of rows of data.
+
+Method 2:
+If warning criterions are met, there will be 
+With an email account, push notifications will be sent given that you logged into your network and notifications criterion, such as CPU usage, or computer temperature, are met.
+
+Method 3:
+With the app is installed, push notifications will be sent given that you logged into your network and notifications criterion, such as CPU usage, or computer temperature, are met.
