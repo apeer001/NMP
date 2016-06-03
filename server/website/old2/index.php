@@ -23,8 +23,8 @@
 		<title>NMP Login</title>
 	</head>
 	<body>
-		<h2>LOGIN</h2>
-		<form action="connectivity.php" method="post">
+		<h2>Add user</h2>
+		<form action="" method="post">
 			<fieldset>
 				<p>
 					<label for="NMP_username">Username</label>
@@ -32,7 +32,7 @@
 				</p>
 				<p>
 					<label for="NMP_password">Password</label>
-					<input type="password" id="NMP_password" name="NMP_password" value="" maxlength="255" />
+					<input type="text" id="NMP_password" name="NMP_password" value="" maxlength="255" />
 				</p>
 				<p>
 					<input type="hidden" name="form_token" value="<?php echo $form_token; ?>" />
