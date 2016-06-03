@@ -32,9 +32,11 @@ import android.support.annotation.IntegerRes;
 import android.support.v4.app.BundleCompat;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
+import android.util.Base64;
 import android.util.Log;
 
 import com.example.cs183.nmpalertviewer.R;
+import com.example.cs183.nmpalertviewer.auth.Login;
 import com.example.cs183.nmpalertviewer.ui.ErrorFragment;
 import com.example.cs183.nmpalertviewer.ui.MainActivity;
 
@@ -110,6 +112,9 @@ public class HttpClientTask extends AsyncTask<Void, Void, Void> {
                     HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
                     try {
                         urlConnection.setRequestMethod("GET");
+                        String userpass = Login.username + ":" + Login.password;
+                        String basicAuth = "Basic " + userpass;//+ new String(Base64.encode(userpass.getBytes(), Base64.NO_WRAP ));
+                        urlConnection.setRequestProperty("Authorization", basicAuth);
                         urlConnection.connect();
 
                         int code = urlConnection.getResponseCode();
