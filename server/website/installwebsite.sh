@@ -1,4 +1,5 @@
 #!/bin/sh
+
 sudo cp ./index.php /var/www/html/
 sudo cp ./connectivity.php /var/www/html
 sudo cp ./home.php /var/www/html/

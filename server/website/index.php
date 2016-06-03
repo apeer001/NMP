@@ -36,7 +36,7 @@
 				</p>
 				<p>
 					<input type="hidden" name="form_token" value="<?php echo $form_token; ?>" />
-					<input type="submit" value="&rarr; Login" />
+					<input type="submit" name="submit"  value="&rarr; Login" />
 				</p>
 			</fieldset>
 		</form>
