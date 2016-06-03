@@ -1,10 +1,21 @@
 #!/usr/bin/python
 
+
+from sys import version as python_version
+from cgi import parse_header, parse_multipart
+
+if python_version.startswith('3'):
+    from urllib.parse import parse_qs
+    from http.server import BaseHTTPRequestHandler, HTTPServer
+else:
+    from urlparse import parse_qs
+    from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
+
 import httplib
 import sys
 import MySQLdb
-from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
 import os
+import base64
 
 # Initial mysql db login
 hostname = "localhost"
@@ -134,13 +145,72 @@ def pullDatabaseData():
     db.close()
     return data
 
+def get_password_from_username(user):
+# returns nothing if username does not exist
+    data = "";
+    print('Connecting to Database...')
+    db = MySQLdb.connect(host=hostname,     # your host, usually localhost
+                         user=username,     # username
+                         passwd=password,   # password
+                         db=database)       # name of the database
+
+    print('Connected to Database')
+    # must create a cursor object
+    cur = db.cursor()
+    try:
+        # Get rows for most recent
+        query_stmt = "SELECT u.password FROM " + table_user + " u WHERE u.username='" + user + "'";
+        cur.execute(query_stmt);
+    
+        # print all the first cell of all the rows
+        #for row in cur.fetchall():
+         #   length = len(row) - 1
+          #  for i in range(0,length):
+           #     data += str(row[i]) + ","
+            #data += str(row[-1]) + "\n"
+        if cur.rowcount == 0:
+            return data;
+
+        data += cur.fetchall()[0][0];
+    except:
+        print "database could not be reached due to error";
+
+
+    return data;
 
 #Create custom HTTPRequestHandler class
 class KodeFunHTTPRequestHandler(BaseHTTPRequestHandler):
+
+    def parse_POST(self):
+        ctype, pdict = parse_header(self.headers['content-type'])
+        if ctype == 'multipart/form-data':
+            postvars = parse_multipart(self.rfile, pdict)
+        elif ctype == 'application/x-www-form-urlencoded':
+            length = int(self.headers['content-length'])
+            postvars = parse_qs(self.rfile.read(length), keep_blank_values=1)
+        else:
+            postvars = {} 
+        return postvars
+ 
   
    #handle GET command
     def do_GET(self):
         try:
+            auth_header = self.headers.getheader('Authorization');
+            print auth_header;
+            entry_username = "root";
+            entry_password = "password";
+            authentic_password = get_password_from_username(entry_username);
+            print authentic_password;
+
+            if not authentic_password:
+                self.send_response(403);
+                return;
+
+            if entry_password != authentic_password: 
+                self.send_response(403);
+                return;
+
             data_to_send = pullDatabaseData()
             if  not data_to_send == None:
                 #send code 200 response
@@ -161,26 +231,61 @@ class KodeFunHTTPRequestHandler(BaseHTTPRequestHandler):
 
     #handle POST command
     def do_POST(self):
-        rootdir = '/home/ec2-user/clientlogs/' #client log location
-        if not os.path.exists(rootdir):
-            os.makedirs(rootdir)
-        clientAddress = self.client_address[0]
+        postvars = self.parse_POST()
+        if postvars:
+            print('there is data')
+            print(postvars)
+            username = postvars['param1']
+            password = postvars['param2']
+            if len(username) == 1 and len(password) == 1:
+                username = username[0]
+                password = password[0]
+                authentic_password = get_password_from_username(username)
+                print authentic_password
+                print username
+                print password
+
+                if not authentic_password:
+                    self.send_response(403)
+                    return
+                if password != authentic_password:
+                    self.send_response(403)
+                    return
+                self.send_response(200)
+                self.send_header('Content-type', 'text-html')
+
+                self.end_headers()
+                
+                key = base64.b64encode(password)
+                self.wfile.write('key:' + str(key) + "\r\n")
+                print(key)
+
+                return
+
+            self.send_response(403)
+            return
+
+        else:
+            rootdir = '/home/ec2-user/clientlogs/' #client log location
+            if not os.path.exists(rootdir):
+                os.makedirs(rootdir)
+            clientAddress = self.client_address[0]
         
-        # Update MySQL database 
-        update = isIPInDB(clientAddress)
-        if update == 0:
-            installNewClient(clientAddress) 
+            # Update MySQL database 
+            update = isIPInDB(clientAddress)
+            if update == 0:
+                installNewClient(clientAddress) 
 
-        #send code 200 response
-        self.send_response(200)
+            #send code 200 response
+            self.send_response(200)
 
-        #send header first
-        self.send_header('Content-type','text-html')
-        self.end_headers()
+            #send header first
+            self.send_header('Content-type','text-html')
+            self.end_headers()
 
-        #send file content to client
-        #self.wfile.write(f.read())
-        return
+            #send file content to client
+            #self.wfile.write(f.read())
+            return
 
 # Start server 
 def runServer():
