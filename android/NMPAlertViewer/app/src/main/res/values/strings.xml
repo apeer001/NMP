@@ -2,4 +2,8 @@
     <string name="app_name">NMP Alert Viewer</string>
     <string name="MainActivityText">All NMP Alerts</string>
     <string name="ErrorActivityText">NMP Error Alerts</string>
+    <string name="ServerAddr">http://52.32.201.77</string>
+    <string name="ServerPort">8080</string>
+    <string name="ServerBoundary">113--------------------113</string>
+    <string name="ServerDelimiter">--</string>
 </resources>

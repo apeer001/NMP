@@ -1,19 +1,34 @@
 package com.example.cs183.nmpalertviewer.auth;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.cs183.nmpalertviewer.R;
+import com.example.cs183.nmpalertviewer.http.HttpClient;
+import com.example.cs183.nmpalertviewer.tasks.SendHttpRequestTask;
 import com.example.cs183.nmpalertviewer.ui.MainActivity;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.concurrent.ExecutionException;
 
 
 /**
@@ -56,43 +71,7 @@ public class Login extends FragmentActivity{
                     Toast.makeText(Login.this, "Please insert a password", Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    //log me in!!!send to server
-                    Intent viewIntent  = new Intent(getApplicationContext(), MainActivity.class);
-                    startActivity(viewIntent);
-                    return;
-                    /*ConnectivityManager cm = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-                    NetworkInfo ni = cm.getActiveNetworkInfo();
-                    // Check if the phone is connected to the internet
-                    if (ni != null) {
-                        boolean isConnected = ni.isConnected();
-                        if(isConnected) {
-                            String FullPath = dstAddress + ":" + dstPort;
-                            try {
-                                //URL url = new URL(dstAddress);
-                                URL url = new URL(FullPath);
-                                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-                                try {
-                                    urlConnection.setRequestMethod("GET");
-                                    urlConnection.connect();
-
-                                    int code = urlConnection.getResponseCode();
-                                    if (code == 200) {
-                                        InputStream in = new BufferedInputStream(urlConnection.getInputStream());
-                                        response = readStream(in);
-                                        Log.d("Login", "Read the data from stream");
-                                    }
-                                } finally {
-                                    urlConnection.disconnect();
-                                }
-                            } catch (MalformedURLException m) {
-                                Log.d("Login", "doInBackground: Malformed url Exception");
-                            } catch (IOException e) {
-                                Log.d("Login", "doInBackground: IOException");
-                            }
-                        } else {
-                            response = "NOT_CONNECTED";
-                        }
-                    }*/
+                    attemptLogin(username,password);
                 }
             }
         });
@@ -111,4 +90,59 @@ public class Login extends FragmentActivity{
         }
     }
 
+    private void attemptLogin(String uname, String pass) {
+        ConnectivityManager cm = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo ni = cm.getActiveNetworkInfo();
+        String response;
+        // Check if the phone is connected to the internet
+        if (ni != null) {
+            boolean isConnected = ni.isConnected();
+            if(isConnected) {
+                String destAddr = getResources().getString(R.string.ServerAddr);
+                String destPort = getResources().getString(R.string.ServerPort);
+                String FullPath = destAddr + ":" + destPort;
+
+                try {
+                    SendHttpRequestTask sendHttpRequestTask = new SendHttpRequestTask(getApplicationContext());
+                    sendHttpRequestTask.execute(FullPath, username, password);
+                    String rsp = sendHttpRequestTask.get();
+                    Log.d(getClass().getSimpleName(), "attemptLogin: " + rsp);
+
+                    try {
+                        if(rsp != null && rsp.contains("\r\n")) {
+                            String lines[] = rsp.split("\r\n");
+                            String arr[] = lines[0].split(":");
+                            if (arr.length == 2) {
+                                String str = new String(Base64.decode(arr[1], 0), "UTF-8");
+                                if (str.equals(password)) {
+                                    Intent i = new Intent(this, MainActivity.class);
+                                    startActivity(i);
+                                } else {
+                                    Toast.makeText(getApplicationContext(),
+                                            "Incorrect Login information", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        } else {
+                            Toast.makeText(getApplicationContext(),
+                                    "Incorrect Login information", Toast.LENGTH_SHORT).show();
+                        }
+                    } catch (UnsupportedEncodingException u) {
+                        Log.d(getClass().getSimpleName(), u.getMessage());
+                    }
+
+                } catch (InterruptedException i) {
+                    Log.d(getClass().getSimpleName(), i.getMessage());
+                } catch (ExecutionException e) {
+                    Log.d(getClass().getSimpleName(), e.getMessage());
+                }
+
+            } else {
+                response = "NOT_CONNECTED";
+            }
+        }
+
+        //log me in!!!send to server
+        //Intent viewIntent  = new Intent(getApplicationContext(), MainActivity.class);
+        //startActivity(viewIntent);
+    }
 }
