@@ -14,7 +14,7 @@
         android:textStyle="bold" />
 
     <ExpandableListView
-        android:id="@+id/lvExp"
+        android:id="@+id/lvExp2"
         android:layout_height="match_parent"
         android:layout_width="match_parent"/>
 

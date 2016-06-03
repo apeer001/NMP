@@ -1,12 +1,8 @@
 package com.example.cs183.nmpalertviewer.auth;
 
-import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,14 +10,10 @@ import android.widget.Toast;
 
 import com.example.cs183.nmpalertviewer.R;
 import com.example.cs183.nmpalertviewer.ui.MainActivity;
-
-import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
+
 
 
 /**

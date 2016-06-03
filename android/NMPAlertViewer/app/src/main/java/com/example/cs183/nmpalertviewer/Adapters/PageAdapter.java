@@ -24,7 +24,7 @@ import java.util.Map;
 public class PageAdapter extends FragmentPagerAdapter{
 
     private Map<Integer, String> mFragmentTags;
-    FragmentManager mFragmentManager;
+    private FragmentManager mFragmentManager;
     Fragment fragment;
     Context context;
 
@@ -54,6 +54,10 @@ public class PageAdapter extends FragmentPagerAdapter{
         if (tag == null)
             return null;
         return mFragmentManager.findFragmentByTag(tag);
+    }
+
+    public FragmentManager getFragmentManager() {
+        return mFragmentManager;
     }
 
 

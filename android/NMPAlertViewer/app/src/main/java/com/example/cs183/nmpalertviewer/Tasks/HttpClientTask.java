@@ -44,7 +44,7 @@ public class HttpClientTask extends AsyncTask<Void, Void, Void> {
 
     Context context;
     private final static String TAG = "HttpClientTask.class";
-    public final static String filename = "clientLogs.csv";;
+    public final static String filename = "clientLogs.csv";
     public final static String NOT_CONNECTED = "Not connected to the internet";
     public final static String CARD_BUNDLE = "cardBundle";
     public final static String PAGEID = "pageId";
@@ -206,11 +206,13 @@ public class HttpClientTask extends AsyncTask<Void, Void, Void> {
 
         for (String line : response.split("\n")) {
             if (!line.contains("----------------------")) {
-                //if (!line.isEmpty()) {
+                String list [] = line.split(",");
+                Log.d(TAG, "CheckForNewErrors: list size" + String.valueOf(line.length()));
+                if (list != null && list.length >= 8) {
                     ErrorFragment.StringArrayList parts = new ErrorFragment.StringArrayList();
-                    parts.set(line.split(","));
+                    parts.set(list);
                     Recentlines2.add(parts);
-                //}
+                }
             } else {
                 break;
             }

@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.pdf.PdfDocument;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -65,16 +66,28 @@ public class MainActivity extends AppCompatActivity {
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
+               /*
+                if (position == 1) {
+                    Log.d(getClass().getSimpleName(), "onPageSelected2: changed error alert fragment");
+                    Fragment frg = pageAdapter.getFragment(position);
+                    final FragmentTransaction ft = ((PageAdapter)viewPager.getAdapter()).getFragmentManager().beginTransaction();
+                    ft.detach(frg);
+                    ft.attach(frg);
+                    ft.commit();
+                    //viewPager.getAdapter().notifyDataSetChanged();
+                }
+                */
             }
 
             @Override
             public void onPageSelected(int position) {
-                Fragment frg = pageAdapter.getFragment(position);
-                final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                ft.detach(frg);
-                ft.attach(frg);
-                ft.commit();
+                if (position > 0) {
+                    PageAdapter mPagerAdapter = ((PageAdapter) viewPager.getAdapter());
+                    MainFragment.YourFragmentInterface fragment = (MainFragment.YourFragmentInterface) mPagerAdapter.instantiateItem(viewPager, position);
+                    if (fragment != null) {
+                        fragment.fragmentBecameVisible();
+                    }
+                }
             }
 
             @Override

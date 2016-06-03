@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.RunnableFuture;
 
 /**
  * Created by Aaron on 5/31/2016.
@@ -43,6 +44,9 @@ public class MainFragment extends Fragment {
     Context context;
     private BottomBar mBottomBar = null;
 
+    Thread listThread = new Thread(new PrepareRunnable());
+    boolean threadAlive = false;
+
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_page,container,false);
@@ -53,9 +57,9 @@ public class MainFragment extends Fragment {
         expListView = (ExpandableListView) view.findViewById(R.id.lvExp);
         // preparing list data
         prepareListData();
-        listAdapter = new ExpandableListAdapter(context, listDataHeader, listDataChild);
+        //listAdapter = new ExpandableListAdapter(context, listDataHeader, listDataChild);
         // setting list adapter
-        expListView.setAdapter(listAdapter);
+        //expListView.setAdapter(listAdapter);
         // Listview on child click listener
         expListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
@@ -110,23 +114,21 @@ public class MainFragment extends Fragment {
                         Intent i = new Intent(context, ServerPullService.class);
                         context.startService(i);
                         prepareListData();
-                        listAdapter = new ExpandableListAdapter(context, listDataHeader, listDataChild);
-                        // setting list adapter
-                        expListView.setAdapter(listAdapter);
                     }
                 }
 
                 @Override
                 public void onMenuTabReSelected(@IdRes int menuItemId) {
                     if (menuItemId == R.id.bottomBarItemOne) {
+
                         // The user reselected item number one, scroll your content to top.
                         Log.d(getClass().getSimpleName(), "onMenuTabReSelected: menu tab selected");
                         Intent i = new Intent(context, ServerPullService.class);
                         context.startService(i);
                         prepareListData();
-                        listAdapter = new ExpandableListAdapter(context, listDataHeader, listDataChild);
+                        //listAdapter = new ExpandableListAdapter(context, listDataHeader, listDataChild);
                         // setting list adapter
-                        expListView.setAdapter(listAdapter);
+                        //expListView.setAdapter(listAdapter);
                     }
                 }
             });
@@ -138,72 +140,105 @@ public class MainFragment extends Fragment {
     }
 
     /*
-         * Preparing the list data
-         */
+     * Preparing the list data
+     */
     private void prepareListData() {
-        listDataHeader = new ArrayList<String>();
-        listDataChild = new HashMap<String, List<String>>();
+        try {
+            if (!threadAlive) {
+                threadAlive = true;
+                listThread.setPriority(Thread.MAX_PRIORITY);
+                listThread.run();
+            }
+        } catch (IllegalThreadStateException i) {
+            Log.d(getClass().getSimpleName(), "prepareListData: thread started and it tried to run again");
+        }
+    }
 
-        File clientLog = new File(context.getFilesDir(), HttpClientTask.filename);
-        //Read text from file
-        ArrayList<StringArrayList> Recentlines = new ArrayList<>();
-        ArrayList<StringArrayList> Alllines = new ArrayList<>();
-        if (clientLog.exists()) {
-            try {
-                BufferedReader br = new BufferedReader(new FileReader(clientLog));
-                String line;
-                while ((line = br.readLine()) != null) {
-                    if (!line.contains("----------------------")) {
+    private class PrepareRunnable implements Runnable {
+
+        @Override
+        public void run() {
+            listDataHeader = new ArrayList<String>();
+            listDataChild = new HashMap<String, List<String>>();
+
+            File clientLog = new File(context.getFilesDir(), HttpClientTask.filename);
+            //Read text from file
+            ArrayList<StringArrayList> Recentlines = new ArrayList<>();
+            ArrayList<StringArrayList> Alllines = new ArrayList<>();
+            if (clientLog.exists()) {
+                try {
+                    BufferedReader br = new BufferedReader(new FileReader(clientLog));
+                    String line;
+                    while ((line = br.readLine()) != null) {
+                        if (!line.contains("----------------------")) {
+                            String list [] = line.split(",");
+                            if (list != null && list.length >= 8) {
+                                StringArrayList parts = new StringArrayList();
+                                parts.set(list);
+                                Recentlines.add(parts);
+                            }
+                        } else {
+                            break;
+                        }
+                    }
+
+                    while ((line = br.readLine()) != null) {
                         StringArrayList parts = new StringArrayList();
                         parts.set(line.split(","));
-                        Recentlines.add(parts);
-                    } else {
-                        break;
+                        Alllines.add(parts);
+                    }
+                    br.close();
+                } catch (FileNotFoundException f) {
+                    Log.d(getActivity().getApplication().getClass().getSimpleName(), f.getMessage());
+                } catch (IOException i) {
+                    Log.d(getActivity().getApplication().getClass().getSimpleName(), i.getMessage());
+                }
+
+
+                // Sort all lines by id
+                Collections.sort(Alllines);
+
+                List <List<String>> expandedData = new ArrayList<>();
+                String currentid = "-1";
+                for(StringArrayList arr : Alllines) {
+                    String data [] = arr.getData();
+                    if (data != null && data.length >= 8) {
+                        currentid = data[1];
+                        String header = "Client " + currentid + " " + data[3];
+
+                        listDataHeader.add(header);
+
+                        // Adding child data
+                        List<String> expList = new ArrayList<String>();
+                        expList.add("Admin: " + data[0]);
+                        expList.add("comp id: " + data[1]);
+                        expList.add("Time: " + data[3]);
+                        expList.add("Status: " + data[4]);
+                        expList.add("CPU Load: " + data[5]);
+                        expList.add("Temp: " + data[6]);
+                        expList.add("Net Load: " + data[7]);
+                        expList.add("Desc: " + data[8]);
+
+                        expandedData.add(expList);
                     }
                 }
 
-                while ((line = br.readLine()) != null) {
-                    StringArrayList parts = new StringArrayList();
-                    parts.set(line.split(","));
-                    Alllines.add(parts);
+                for (int i = 0; i < listDataHeader.size(); i++) {
+                    listDataChild.put(listDataHeader.get(i), expandedData.get(i)); // Header, Child data
                 }
-                br.close();
-            } catch (FileNotFoundException f) {
-                Log.d(getActivity().getApplication().getClass().getSimpleName(), f.getMessage());
-            } catch (IOException i) {
-                Log.d(getActivity().getApplication().getClass().getSimpleName(), i.getMessage());
             }
-
-
-            // Sort all lines by id
-            Collections.sort(Alllines);
-
-            List <List<String>> expandedData = new ArrayList<>();
-            String currentid = "-1";
-            for(StringArrayList arr : Alllines) {
-                String data [] = arr.getData();
-                currentid = data[1];
-                String header = "Client " + currentid + " " + data[3];
-
-                listDataHeader.add(header);
-
-                // Adding child data
-                List<String> expList = new ArrayList<String>();
-                expList.add("Admin: " + data[0]);
-                expList.add("comp id: " + data[1]);
-                expList.add("Time: " + data[3]);
-                expList.add("Status: " + data[4]);
-                expList.add("CPU Load: " + data[5]);
-                expList.add("Temp: " + data[6]);
-                expList.add("Net Load: " + data[7]);
-                expList.add("Desc: " + data[8]);
-
-                expandedData.add(expList);
-            }
-
-            for (int i = 0; i < listDataHeader.size(); i++) {
-                listDataChild.put(listDataHeader.get(i), expandedData.get(i)); // Header, Child data
-            }
+            threadAlive = false;
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    listAdapter = new ExpandableListAdapter(context, listDataHeader, listDataChild);
+                    listAdapter.notifyDataSetChanged();
+                    // setting list adapter
+                    expListView.setAdapter(listAdapter);
+                    //expListView.notifyAll();
+                    Log.d(getClass().getSimpleName(), "run: Thread finished the view should now be updated");
+                }
+            });
         }
     }
 
@@ -228,5 +263,9 @@ public class MainFragment extends Fragment {
         public int compareTo(StringArrayList o) {
             return getid().compareTo(o.getid());
         }
+    }
+
+    public interface YourFragmentInterface {
+        void fragmentBecameVisible();
     }
 }
