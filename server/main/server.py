@@ -196,21 +196,6 @@ class KodeFunHTTPRequestHandler(BaseHTTPRequestHandler):
    #handle GET command
     def do_GET(self):
         try:
-            auth_header = self.headers.getheader('Authorization');
-            print auth_header;
-            entry_username = "root";
-            entry_password = "password";
-            authentic_password = get_password_from_username(entry_username);
-            print authentic_password;
-
-            if not authentic_password:
-                self.send_response(403);
-                return;
-
-            if entry_password != authentic_password: 
-                self.send_response(403);
-                return;
-
             data_to_send = pullDatabaseData()
             if  not data_to_send == None:
                 #send code 200 response
@@ -299,47 +284,4 @@ def runServer():
 
 if __name__ == '__main__':
     runServer()
-
-    #get http server ip
-    #http_server = "169.235.217.141"
-    #http_server = '52.10.214.107'
-    #create a connection
-    #conn = httplib.HTTPConnection(http_server,8080)
-
-    #while 1:
-    #    cmd = raw_input('input command (ex. GET index.html): ')
-    #    cmd = cmd.split()
-
-    #    if cmd[0] == 'exit': #tipe exit to end it
-    #        break
-
-        #request command to server
-        #conn.request(cmd[0], cmd[1])
-    #    conn.request("GET", "myIP.txt")
-        
-        #get response from server
-    #    rsp = conn.getresponse()
-
-        #print server response and data
-    #    print(rsp.status, rsp.reason)
-    #    data_received = rsp.read()
-    #    print(data_received)
-      
-    #conn.close()
-
-
-
-
-#try:
-#                if self.path.endswith('.txt'):
-#                    if os.path.exists(rootdir + self.path):
-#                        f = open(rootdir + self.path, "a") #open requested file, append
-#                    else:
-#                        f = open(rootdir + self.path, "w") #open requested file, new file
-#                
-#                    f.write(self.path + '\n') 
-#                    f.close()
-#            except IOError:
-#                self.send_error(404, 'file not found')
-#                return 
 
