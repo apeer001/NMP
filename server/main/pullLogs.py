@@ -126,8 +126,8 @@ def getLogs():
 def isAnErrorStatus(status):
     for s in ERRARRAY:
         if status == s:
-            return  true
-    return false
+            return True
+    return False
 
 
 # Checks the 'network_data' table and finds all logs from the last 10 minutes
@@ -143,7 +143,11 @@ def updateMostRecentErrorsDB():
 	# must create a cursor object
 	cur = db.cursor()
 
-	# Query for all ip addresses in network table
+        # delete all current logs in recent table
+        query_stmt1 = "TRUNCATE TABLE " + table_recent
+        cur.execute(query_stmt1)
+	
+        # Query for all ip addresses in network table
 	upperBound = datetime.now()
 	lowerBound = upperBound - timedelta(minutes=10)
 	upperBound = upperBound.strftime("%Y-%m-%d %H:%M:%S") 
@@ -152,10 +156,10 @@ def updateMostRecentErrorsDB():
 	cur.execute(query_stmt)  
 	for (admin_user, comp_id, comp_ip, timestamp, comp_status, cpu_load, comp_temp, net_load, description) in cur.fetchall():
 	    if isAnErrorStatus(comp_status):
-                print(admin_user + " " + str(comp_id) + " " + str(comp_ip))
+                #print(admin_user + " " + str(comp_id) + " " + str(comp_ip))
 	        # update log row
                 try:
-		    #logPart = [timestamp, comp_status, cpu_load, comp_temp, net_load, description]
+		    logPart = [timestamp, comp_status, cpu_load, comp_temp, net_load, description]
 		    #print(logPart)
 		    updateLogDB(cur,comp_ip,comp_id,logPart,admin_user,table_recent)
 		    db.commit()         
