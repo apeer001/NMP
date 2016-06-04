@@ -1,7 +1,11 @@
 #! /usr/bin/python
-
-
 import datetime, sys, os, time, random, subprocess
+
+CRITICAL_TEMP = 80
+WARNING_TEMP = 40
+
+CRITICAL_CPU_LOAD = 80
+WARNING_CPU_LOAD = 40
 
 logfile = '/home/ec2-user/cs183/NMP/client/client_log.txt'                      ##Name of the file to be created to store information about the client
    
@@ -15,9 +19,9 @@ cpu_load = subprocess.check_output(command, shell=True)
 cpu_load = cpu_load[8:len(cpu_load)-1]                                          ##Formats the string
 cpu_load = int(100.00 - float(cpu_load))                                        ##Since we got the percentage of idle CPU, we subtract that from 100 to get the amount in use
 
-if cpu_load > 80:
+if cpu_load > CRITICAL_CPU_LOAD:
     comp_temp = random.randint(75, 112)                                         ##Computer Temperature - Can't get the temperature of a virtual machine so we use a random number generator to try and simulate it
-elif cpu_load <= 80 and cpu_load >40:                                           ##Semi-bases the number on computer load
+elif cpu_load <= CRITICAL_TEMP and cpu_load > WARNING_CPU_LOAD:                                           ##Semi-bases the number on computer load
     comp_temp = random.randint(40, 85)
 else:
     comp_temp = random.randint(15, 39)
@@ -45,23 +49,23 @@ tempmessage = ""
 #comp_temp = 50
 #comp_temp = 90
 
-if cpu_load > 80 or comp_temp > 80:                                             ##If CPU LOAD is above 80% or TEMPERATURE is above 80C then we are in a CRITICAL state
+if cpu_load > CRITICAL_CPU_LOAD or comp_temp > CRITICAL_TEMP:                                             ##If CPU LOAD is above 80% or TEMPERATURE is above 80C then we are in a CRITICAL state
     status = "CRITICAL"                                                         ##The status of the machine is set to CRITICAL and warning messages are put into the client_log
-    if cpu_load > 80:
+    if cpu_load > CRITICAL_CPU_LOAD:
         cpumessage = "CPU LOAD at or nearing maximum."
-    if comp_temp > 80:
+    if comp_temp > CRITICAL_TEMP:
         tempmessage = "INTERNAL TEMPERATURE too high."
     client_log = cpumessage + " " + tempmessage
         
-elif (cpu_load <= 80 or comp_temp <= 80) and (cpu_load > 40 or comp_temp > 40): ##If CPU LOAD is lower than 80% but above 20% or TEMPERATURE is below 80C but above 40C then we are in a WARNING state
+elif (cpu_load <= CRITICAL_CPU_LOAD or comp_temp <= CRITICAL_TEMP) and (cpu_load > WARNING_CPU_LOAD or comp_temp > WARNING_TEMP): ##If CPU LOAD is lower than 80% but above 20% or TEMPERATURE is below 80C but above 40C then we are in a WARNING state
     status = "WARNING"                                                          ##The status of the machine is set to WARNING and warning messages are put into the client_log
-    if cpu_load > 40:
+    if cpu_load > WARNING_CPU_LOAD:
         cpumessage = "CPU LOAD approaching maximum."
-    if comp_temp > 40:
+    if comp_temp > WARNING_TEMP:
         tempmessage = "INTERNAL TEMPERATURE approaching maximum threshold."
     client_log = cpumessage + " " + tempmessage
         
-elif cpu_load <= 40 and comp_temp <= 40:                                        ##If both CPU LOAD and TEMPERATURE are below 40% and 20C respectively, then we are in a GOOD state
+elif cpu_load <= WARNING_CPU_LOAD and comp_temp <= WARNING_TEMP:                                        ##If both CPU LOAD and TEMPERATURE are below 40% and 20C respectively, then we are in a GOOD state
     status = "GOOD"                                                             ##The status of the machine is set to GOOD and a message is put into the client_log
     client_log = "CPU LOAD and INTERNAL TEMPERATURE well below maximum thresholds."
 
